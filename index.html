@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MYTHOS — Where Stories Come Alive</title>
+  <meta name="description" content="MYTHOS is a modern storytelling platform dedicated to bringing extraordinary tales to readers worldwide.">
+  <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ═══════════════════════════════════════════
+       DESIGN TOKENS
+    ═══════════════════════════════════════════ */
+    :root {
+      --navy:        #08091a;
+      --navy-mid:    #0e1030;
+      --navy-light:  #141640;
+      --purple:      #3d2d7a;
+      --violet:      #6c4fd4;
+      --gold:        #c8983a;
+      --gold-light:  #e8b84b;
+      --cream:       #f5f0e8;
+      --white:       #ffffff;
+      --text-muted:  rgba(255,255,255,0.55);
+      --text-body:   rgba(255,255,255,0.82);
+      --font-display:'Cormorant Garamond', Georgia, serif;
+      --font-body:   'DM Sans', sans-serif;
+      --radius-sm:   8px;
+      --radius-md:   16px;
+      --radius-lg:   24px;
+      --shadow-sm:   0 2px 12px rgba(0,0,0,0.25);
+      --shadow-md:   0 8px 32px rgba(0,0,0,0.35);
+      --shadow-lg:   0 20px 60px rgba(0,0,0,0.5);
+      --glow-gold:   0 0 30px rgba(200,152,58,0.3);
+      --glow-violet: 0 0 40px rgba(108,79,212,0.4);
+      --transition:  0.35s cubic-bezier(0.4,0,0.2,1);
+      --container:   1180px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); background: var(--navy); color: var(--text-body); overflow-x: hidden; line-height: 1.7; }
+    img  { max-width: 100%; display: block; }
+    a    { text-decoration: none; color: inherit; }
+    ul   { list-style: none; }
+    button { font-family: var(--font-body); cursor: pointer; border: none; background: none; }
+    .container { max-width: var(--container); margin: 0 auto; padding: 0 28px; }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(36px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ── TYPOGRAPHY ── */
+    .display-title  { font-family: var(--font-display); font-size: clamp(42px,6vw,78px); font-weight: 700; line-height: 1.08; letter-spacing: -0.5px; color: var(--white); }
+    .section-eyebrow{ font-family: var(--font-body); font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; display: block; }
+    .section-heading{ font-family: var(--font-display); font-size: clamp(32px,4vw,52px); font-weight: 700; color: var(--white); line-height: 1.15; }
+    .section-sub    { font-size: 16px; color: var(--text-muted); max-width: 540px; line-height: 1.75; }
+
+    /* ── BUTTONS ── */
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 15px 34px;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+      color: var(--navy); font-size: 14px; font-weight: 600; letter-spacing: 0.5px;
+      border-radius: 50px; cursor: pointer; transition: var(--transition);
+      box-shadow: 0 4px 20px rgba(200,152,58,0.35); position: relative; overflow: hidden;
+    }
+    .btn-primary::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.2),transparent); opacity:0; transition:opacity 0.3s; }
+    .btn-primary:hover   { transform:translateY(-3px); box-shadow:0 8px 32px rgba(200,152,58,0.55),var(--glow-gold); }
+    .btn-primary:hover::before { opacity:1; }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 32px; background: transparent; color: var(--white);
+      font-size: 14px; font-weight: 500; border: 1.5px solid rgba(255,255,255,0.25);
+      border-radius: 50px; cursor: pointer; transition: var(--transition);
+    }
+    .btn-ghost:hover { background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.5); transform:translateY(-2px); }
+    .play-icon { width:16px; height:16px; fill:currentColor; }
+
+    /* ═══════════════════════════════════════════
+       HEADER
+    ═══════════════════════════════════════════ */
+    .site-header { position:fixed; top:0; left:0; right:0; z-index:1000; transition:background 0.4s ease, box-shadow 0.4s ease; }
+    .site-header.scrolled { background:rgba(8,9,26,0.95); backdrop-filter:blur(16px); box-shadow:0 1px 0 rgba(255,255,255,0.07); }
+    .header-inner { display:flex; align-items:center; justify-content:space-between; height:72px; }
+
+    .site-nav { display:flex; align-items:center; gap:36px; }
+    .nav-link { font-size:13px; font-weight:500; color:var(--text-muted); letter-spacing:0.3px; transition:color 0.3s; position:relative; }
+    .nav-link::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:1.5px; background:var(--gold); transition:width 0.3s; }
+    .nav-link:hover { color:var(--white); }
+    .nav-link:hover::after { width:100%; }
+    .header-actions { display:flex; align-items:center; gap:14px; }
+    .header-icon-btn { width:40px; height:40px; display:flex; align-items:center; justify-content:center; border-radius:50%; color:var(--text-muted); transition:var(--transition); border:1.5px solid transparent; }
+    .header-icon-btn:hover { color:var(--white); border-color:rgba(255,255,255,0.2); background:rgba(255,255,255,0.07); }
+    .header-icon-btn svg { width:18px; height:18px; }
+    .nav-toggle { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:6px; }
+    .nav-toggle span { display:block; width:22px; height:2px; background:var(--white); border-radius:2px; transition:var(--transition); }
+
+    /* ═══════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════ */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+      padding: 100px 0 80px;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 65% 40%, rgba(61,45,122,0.6) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 50% at 10% 80%, rgba(108,79,212,0.28) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 80% 80%, rgba(200,152,58,0.08) 0%, transparent 55%),
+        linear-gradient(160deg, #08091a 0%, #0e1030 50%, #08091a 100%);
+    }
+    .hero-bg::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg,rgba(8,9,26,0.1) 0%,rgba(8,9,26,0.7) 100%); }
+
+    .orb { position:absolute; border-radius:50%; filter:blur(70px); opacity:0.18; animation:orbFloat 8s ease-in-out infinite; pointer-events:none; }
+    .orb-1 { width:520px; height:520px; background:var(--violet); top:-120px; right:3%; animation-delay:0s; }
+    .orb-2 { width:320px; height:320px; background:var(--gold);   bottom:8%;  left:4%; animation-delay:3s; }
+    .orb-3 { width:200px; height:200px; background:#8b5cf6;       top:40%;    left:28%;animation-delay:5s; opacity:0.12; }
+    @keyframes orbFloat { 0%,100%{transform:translateY(0) scale(1);} 50%{transform:translateY(-30px) scale(1.05);} }
+
+    .hero-grid {
+      position: relative; z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 48px;
+      min-height: 80vh;
+    }
+
+    .hero-content { display: flex; flex-direction: column; }
+    .hero-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(200,152,58,0.12); border:1px solid rgba(200,152,58,0.3); border-radius:50px; padding:7px 16px; font-size:12px; font-weight:500; color:var(--gold-light); margin-bottom:24px; letter-spacing:0.5px; width:fit-content; }
+    .hero-badge-dot { width:7px; height:7px; border-radius:50%; background:var(--gold-light); animation:dotPulse 2s ease-in-out infinite; }
+    @keyframes dotPulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.5;transform:scale(0.85);} }
+    .hero-title { margin-bottom:20px; }
+    .hero-title em { font-style:italic; color:var(--gold-light); }
+    .hero-desc  { font-size:16px; color:var(--text-muted); max-width:460px; margin-bottom:32px; line-height:1.8; }
+    .hero-actions { display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-bottom:40px; }
+    .hero-stats {
+      display:flex; gap:32px;
+      padding-top:28px;
+      border-top:1px solid rgba(255,255,255,0.08);
+    }
+    .stat-num   { font-family:var(--font-display); font-size:30px; font-weight:700; color:var(--white); }
+    .stat-label { font-size:11px; color:var(--text-muted); margin-top:2px; letter-spacing:0.3px; }
+
+    /* ═══════════════════════════════════════════
+       HERO VISUAL — RIGHT SIDE
+    ═══════════════════════════════════════════ */
+    .hero-visual {
+      position: relative;
+      width: 100%;
+      height: 580px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1200px;
+    }
+
+    .hv-amb { position:absolute; border-radius:50%; filter:blur(65px); pointer-events:none; animation:ambDrift var(--adur,10s) ease-in-out infinite var(--adelay,0s); }
+    .hv-amb-v { width:300px;height:300px; background:rgba(108,79,212,0.3); top:5%;  right:6%;  --adur:10s; --adelay:0s; }
+    .hv-amb-g { width:220px;height:220px; background:rgba(200,152,58,0.22); bottom:8%;left:6%;  --adur:13s; --adelay:0s; }
+    .hv-amb-c { width:360px;height:360px; background:radial-gradient(circle,rgba(200,152,58,0.15) 0%,transparent 70%); top:50%;left:50%;transform:translate(-50%,-50%); filter:blur(40px); animation:glowBreath 5s ease-in-out infinite; }
+    @keyframes ambDrift { 0%,100%{ transform:translate(0,0) scale(1); } 33%{ transform:translate(14px,-20px) scale(1.07); } 66%{ transform:translate(-12px,12px) scale(0.93); } }
+    @keyframes glowBreath { 0%,100%{opacity:0.6;} 50%{opacity:1;} }
+
+    .hv-ring { position:absolute; border-radius:50%; pointer-events:none; top:50%; left:50%; transform:translate(-50%,-50%); animation:ringBreath var(--rdur,4s) ease-in-out infinite var(--rdelay,0s); }
+    .hv-ring-1 { width:360px; height:360px; border:1px solid rgba(200,152,58,0.2); --rdur:4s; --rdelay:0s; }
+    .hv-ring-2 { width:500px; height:500px; border:1px solid rgba(108,79,212,0.14); --rdur:5.5s; --rdelay:1.5s; }
+    @keyframes ringBreath { 0%,100%{ opacity:0.7; transform:translate(-50%,-50%) scale(1); } 50%{ opacity:0.2; transform:translate(-50%,-50%) scale(1.04); } }
+
+    .sd { position:absolute; pointer-events:none; border-radius:50%; animation:starTwink var(--sdd,3s) ease-in-out infinite var(--sdel,0s); }
+    @keyframes starTwink { 0%,100%{opacity:0.25;transform:scale(1);} 50%{opacity:1;transform:scale(1.6);} }
+
+    .fw { position:absolute; pointer-events:none; user-select:none; font-family:var(--font-display); font-style:italic; font-weight:600; letter-spacing:1.5px; text-shadow:0 0 12px currentColor; animation:wordRise var(--wdur,10s) ease-in-out infinite var(--wdelay,0s); opacity:0; }
+    .fw.sm { font-size:11px; } .fw.md { font-size:13px; } .fw.lg { font-size:16px; }
+    .fw-gold   { color:rgba(200,152,58,0.7); }
+    .fw-violet { color:rgba(176,150,255,0.6); }
+    @keyframes wordRise { 0%{opacity:0;transform:translateY(10px) scale(0.95);} 12%{opacity:1;transform:translateY(0) scale(1);} 80%{opacity:0.8;transform:translateY(-18px) scale(1);} 100%{opacity:0;transform:translateY(-28px) scale(0.98);} }
+
+    .sp { position:absolute; pointer-events:none; border-radius:50%; animation:spFly var(--sdur,8s) ease-in-out infinite var(--sdelay,0s); opacity:0; }
+    @keyframes spFly { 0%{opacity:0;transform:translateY(0) scale(0.4);} 18%{opacity:1;transform:translateY(-8px) scale(1);} 78%{opacity:0.4;transform:translateY(-45px) scale(0.8);} 100%{opacity:0;transform:translateY(-65px) scale(0.2);} }
+
+    .hero-img-frame { position: relative; z-index: 5; transform-style: preserve-3d; transition: transform 0.08s linear; will-change: transform; }
+    .hero-img-frame img { width: 100%; max-width: 340px; margin: 0 auto; filter: drop-shadow(0 50px 90px rgba(61,45,122,0.9)) drop-shadow(0 0 40px rgba(200,152,58,0.3)); animation: bookFloat 6s cubic-bezier(0.45,0.05,0.55,0.95) infinite; }
+    @keyframes bookFloat { 0%,100%{transform:translateY(0) rotateX(0deg);} 50%{transform:translateY(-18px) rotateX(2deg);} }
+
+    .book-glow-base { position:absolute; z-index:4; width:280px; height:60px; background:radial-gradient(ellipse,rgba(200,152,58,0.4) 0%,transparent 70%); border-radius:50%; bottom:12%; left:50%; transform:translateX(-50%); filter:blur(18px); animation:glowBreath 6s ease-in-out infinite; }
+
+    /* STAT NODES */
+    .stat-node {
+      position: absolute; z-index: 6;
+      display: flex; flex-direction: column; align-items: center; gap: 0;
+      pointer-events: none;
+    }
+    .stat-pill {
+      position: relative; display: flex; align-items: center; gap: 10px;
+      padding: 10px 18px 10px 12px;
+      background: rgba(8, 9, 30, 0.75); border-radius: 50px;
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
+      animation: statFloat var(--sf-dur, 9s) ease-in-out infinite var(--sf-delay, 0s);
+      white-space: nowrap;
+    }
+    .stat-pill::before {
+      content: ''; position: absolute; inset: 0; border-radius: 50px; padding: 1px;
+      background: linear-gradient(135deg, var(--pill-color-a, rgba(200,152,58,0.6)), transparent 60%);
+      border: 1px solid rgba(255,255,255,0.08);
+      -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
+    }
+    .stat-orb {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--pill-bg, rgba(200,152,58,0.15));
+      border: 1px solid var(--pill-border, rgba(200,152,58,0.3));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0;
+      box-shadow: 0 0 12px var(--pill-glow, rgba(200,152,58,0.2));
+    }
+    .stat-text { display: flex; flex-direction: column; }
+    .stat-val  { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--white); line-height: 1.1; }
+    .stat-lbl  { font-size: 10px; font-weight: 500; letter-spacing: 0.5px; color: var(--text-muted); margin-top: 1px; }
+    .stat-connector {
+      width: 1px; background: linear-gradient(to bottom, rgba(200,152,58,0.4), transparent);
+      height: 0; animation: connGrow var(--sf-dur, 9s) ease-in-out infinite var(--sf-delay, 0s);
+    }
+    .stat-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--pill-border, rgba(200,152,58,0.6));
+      box-shadow: 0 0 8px var(--pill-glow, rgba(200,152,58,0.4));
+    }
+    @keyframes statFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    @keyframes connGrow  { 0%,100% { transform: scaleY(1); }    50% { transform: scaleY(0.85); } }
+
+    .sn-readers {
+      top: 10%; left: -5%; --sf-dur: 10s; --sf-delay: 0s;
+      --pill-color-a: rgba(108,79,212,0.7); --pill-bg: rgba(108,79,212,0.15);
+      --pill-border: rgba(108,79,212,0.4); --pill-glow: rgba(108,79,212,0.25);
+    }
+    .sn-readers .stat-connector { background: linear-gradient(to bottom, rgba(108,79,212,0.5), transparent); height: 28px; }
+
+    .sn-stories {
+      bottom: 14%; left: -2%; --sf-dur: 12s; --sf-delay: 2s;
+      --pill-color-a: rgba(200,152,58,0.7); --pill-bg: rgba(200,152,58,0.12);
+      --pill-border: rgba(200,152,58,0.35); --pill-glow: rgba(200,152,58,0.2);
+    }
+    .sn-stories .stat-connector { background: linear-gradient(to top, rgba(200,152,58,0.5), transparent); height: 28px; order: -1; }
+    .sn-stories .stat-dot { order: -2; }
+
+    .sn-rating {
+      top: 28%; right: -8%; --sf-dur: 8s; --sf-delay: 1s;
+      --pill-color-a: rgba(20,200,160,0.7); --pill-bg: rgba(20,200,160,0.1);
+      --pill-border: rgba(20,200,160,0.35); --pill-glow: rgba(20,200,160,0.2);
+    }
+    .sn-rating .stat-connector { background: linear-gradient(to bottom, rgba(20,200,160,0.5), transparent); height: 20px; }
+
+    .scroll-indicator { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); z-index: 10; display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--text-muted); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; animation: scrollBounce 2s ease-in-out infinite; }
+    @keyframes scrollBounce { 0%,100%{transform:translateX(-50%) translateY(0);} 50%{transform:translateX(-50%) translateY(6px);} }
+    .scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--gold), transparent); }
+
+    /* ═══════════════════════════════════════════
+       SECTIONS
+    ═══════════════════════════════════════════ */
+    .section { padding:100px 0; }
+    .section-dark { background:var(--navy); }
+    .section-mid  { background:var(--navy-mid); }
+    .section-header { margin-bottom:64px; }
+    .section-header.centered { text-align:center; }
+    .section-header.centered .section-sub { margin:16px auto 0; }
+    .section-divider { height:1px; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.07),transparent); margin:0 28px; }
+
+    /* ── FEATURES ── */
+    .features-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .feature-card { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.07); border-radius:var(--radius-lg); padding:36px 28px; transition:var(--transition); position:relative; overflow:hidden; }
+    .feature-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--gold),transparent); opacity:0; transition:opacity 0.35s; }
+    .feature-card:hover { background:rgba(255,255,255,0.07); border-color:rgba(200,152,58,0.2); transform:translateY(-8px); box-shadow:var(--shadow-md),0 0 40px rgba(61,45,122,0.3); }
+    .feature-card:hover::before { opacity:1; }
+    .feature-icon { width:56px; height:56px; border-radius:var(--radius-sm); background:linear-gradient(135deg,rgba(108,79,212,0.25),rgba(61,45,122,0.25)); border:1px solid rgba(108,79,212,0.25); display:flex; align-items:center; justify-content:center; margin-bottom:24px; font-size:24px; transition:transform 0.3s; }
+    .feature-card:hover .feature-icon { transform:scale(1.1) rotate(-3deg); }
+    .feature-title { font-family:var(--font-display); font-size:20px; font-weight:600; color:var(--white); margin-bottom:10px; line-height:1.3; }
+    .feature-text  { font-size:14px; color:var(--text-muted); line-height:1.75; }
+
+    /* ── ABOUT ── */
+    .about-section { position:relative; overflow:hidden; }
+    .about-bg { position:absolute; inset:0; background:linear-gradient(135deg,var(--navy-mid),rgba(61,45,122,0.4)); }
+    .about-inner { position:relative; z-index:1; display:grid; grid-template-columns:1fr 1.15fr; gap:72px; align-items:center; }
+    .about-body  { display:flex; flex-direction:column; gap:22px; }
+    .about-para  { font-size:15.5px; color:var(--text-body); line-height:1.9; padding-left:20px; border-left:2px solid rgba(200,152,58,0.3); }
+    .about-para:first-child { border-left-color:var(--gold); }
+
+    .about-visual { position:relative; display:flex; align-items:center; justify-content:center; min-height:420px; }
+    .about-ring   { position:absolute; border-radius:50%; border:1px solid rgba(200,152,58,0.12); animation:ringBreath 5s ease-in-out infinite; }
+    .about-ring-1 { width:340px; height:340px; }
+    .about-ring-2 { width:460px; height:460px; animation-delay:2s; border-color:rgba(108,79,212,0.1); }
+    .about-book-card { position:relative; z-index:2; width:300px; height:300px; background:linear-gradient(145deg,rgba(20,22,64,0.9),rgba(61,45,122,0.35)); border:1px solid rgba(200,152,58,0.2); border-radius:24px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; box-shadow:0 24px 60px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.06); animation:bookFloat 7s ease-in-out infinite; padding:32px; text-align:center; }
+    .about-book-svg { animation:bookGlow 4s ease-in-out infinite; }
+    @keyframes bookGlow { 0%,100%{filter:drop-shadow(0 0 8px rgba(200,152,58,0.4));} 50%{filter:drop-shadow(0 0 20px rgba(200,152,58,0.7));} }
+    .about-book-quote  { font-family:var(--font-display); font-style:italic; font-size:15px; color:rgba(255,255,255,0.75); line-height:1.7; }
+    .about-book-author { font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--gold); }
+    .about-pill { position:absolute; z-index:3; background:rgba(8,9,26,0.88); border:1px solid rgba(200,152,58,0.25); border-radius:50px; padding:10px 18px; display:flex; align-items:center; gap:10px; backdrop-filter:blur(12px); box-shadow:0 8px 28px rgba(0,0,0,0.35); animation:pillFloat var(--adur,8s) ease-in-out infinite var(--adelay,0s); }
+    .about-pill-num   { font-family:var(--font-display); font-size:22px; font-weight:700; color:var(--gold-light); line-height:1; }
+    .about-pill-label { font-size:11px; color:var(--text-muted); line-height:1.3; }
+    .ap1 { top:10%;    left:-10%;  --adur:9s;  --adelay:0s; }
+    .ap2 { bottom:12%; right:-8%;  --adur:11s; --adelay:2s; }
+    .ap3 { bottom:30%; left:-12%;  --adur:10s; --adelay:1s; }
+    @keyframes pillFloat { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
+
+    /* ── GENRES ── */
+    .genres-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+    .genre-card  { border-radius:var(--radius-lg); padding:36px 30px; cursor:pointer; transition:transform 0.35s ease,box-shadow 0.35s ease; text-decoration:none; display:block; position:relative; overflow:hidden; min-height:180px; }
+    .genre-card:hover  { transform:translateY(-8px) scale(1.02); box-shadow:0 24px 60px rgba(0,0,0,0.4); }
+    .genre-badge { display:inline-block; background:rgba(255,255,255,0.18); color:rgba(255,255,255,0.9); font-size:11px; font-weight:600; padding:5px 13px; border-radius:50px; letter-spacing:0.8px; margin-bottom:16px; }
+    .genre-name  { font-family:var(--font-display); font-size:26px; font-weight:700; color:#fff; margin-bottom:8px; }
+    .genre-desc  { font-size:13px; color:rgba(255,255,255,0.75); line-height:1.6; }
+    .gc1 { background:linear-gradient(140deg,#2d1b69,#6c4fd4); }
+    .gc2 { background:linear-gradient(140deg,#7b1a4b,#d4548a); }
+    .gc3 { background:linear-gradient(140deg,#0e3460,#2a7de1); }
+    .gc4 { background:linear-gradient(140deg,#0f4c35,#1ab87a); }
+    .gc5 { background:linear-gradient(140deg,#7a3a00,#e07b2a); }
+    .gc6 { background:linear-gradient(140deg,#3a1a5a,#9b59d4); }
+
+    /* ── IMPACT ── */
+    .impact-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .impact-card { background:linear-gradient(135deg,rgba(61,45,122,0.2),rgba(108,79,212,0.1)); border:1px solid rgba(108,79,212,0.2); border-radius:var(--radius-lg); padding:36px 28px; text-align:center; transition:var(--transition); }
+    .impact-card:hover { background:linear-gradient(135deg,rgba(61,45,122,0.35),rgba(108,79,212,0.2)); border-color:rgba(200,152,58,0.3); transform:translateY(-6px); box-shadow:var(--shadow-md),var(--glow-violet); }
+    .impact-icon  { width:52px; height:52px; margin:0 auto 20px; border-radius:var(--radius-sm); background:rgba(200,152,58,0.12); display:flex; align-items:center; justify-content:center; font-size:22px; }
+    .impact-num   { font-family:var(--font-display); font-size:38px; font-weight:700; color:var(--gold-light); line-height:1; margin-bottom:8px; }
+    .impact-label { font-size:14px; font-weight:600; color:var(--white); margin-bottom:10px; }
+    .impact-text  { font-size:13px; color:var(--text-muted); line-height:1.7; }
+
+    /* ── BLOG ── */
+    .blog-scroll-wrap { overflow-x:auto; padding-bottom:12px; scrollbar-width:thin; scrollbar-color:rgba(200,152,58,0.3) transparent; }
+    .blog-scroll-wrap::-webkit-scrollbar { height:4px; }
+    .blog-scroll-wrap::-webkit-scrollbar-track { background:transparent; }
+    .blog-scroll-wrap::-webkit-scrollbar-thumb { background:rgba(200,152,58,0.3); border-radius:4px; }
+    .blog-track { display:flex; gap:24px; width:max-content; }
+    .blog-card  { width:360px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.07); border-radius:var(--radius-lg); overflow:hidden; transition:var(--transition); flex-shrink:0; }
+    .blog-card:hover { transform:translateY(-10px); border-color:rgba(200,152,58,0.2); box-shadow:var(--shadow-lg); }
+    .blog-img   { overflow:hidden; height:210px; }
+    .blog-img img { width:100%; height:100%; object-fit:cover; transition:transform 0.5s ease; }
+    .blog-card:hover .blog-img img { transform:scale(1.06); }
+    .blog-body  { padding:26px; }
+    .blog-meta  { display:flex; align-items:center; gap:14px; margin-bottom:14px; }
+    .blog-date  { font-size:12px; color:var(--gold); font-weight:500; }
+    .blog-comments { font-size:12px; color:var(--text-muted); }
+    .blog-title { font-family:var(--font-display); font-size:19px; font-weight:600; color:var(--white); line-height:1.4; margin-bottom:12px; max-height:calc(1.4em * 2); overflow:hidden; }
+    .blog-excerpt { font-size:13px; color:var(--text-muted); line-height:1.7; margin-bottom:20px; max-height:calc(1.7em * 3); overflow:hidden; }
+    .blog-link { font-size:13px; font-weight:600; color:var(--gold); display:inline-flex; align-items:center; gap:6px; transition:gap 0.3s; }
+    .blog-link:hover { gap:10px; }
+
+    /* ── VIDEO MODAL ── */
+    .video-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.94); backdrop-filter:blur(8px); z-index:9999; justify-content:center; align-items:center; padding:24px; }
+    .video-overlay.active { display:flex; animation:fadeIn 0.3s ease; }
+    @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+    .video-box { position:relative; width:100%; max-width:920px; animation:scaleIn 0.3s ease; }
+    @keyframes scaleIn { from{opacity:0;transform:scale(0.92);} to{opacity:1;transform:scale(1);} }
+    .video-close { position:absolute; top:-50px; right:0; width:44px; height:44px; display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.7); cursor:pointer; transition:var(--transition); border-radius:50%; border:1.5px solid rgba(255,255,255,0.2); }
+    .video-close:hover { color:#fff; border-color:rgba(255,255,255,0.5); transform:rotate(90deg); }
+    .video-close svg { width:18px; height:18px; }
+    .video-ratio { position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:var(--radius-md); box-shadow:0 30px 80px rgba(0,0,0,0.7); background:#000; }
+    .video-ratio video { position:absolute; inset:0; width:100%; height:100%; border:none; border-radius:var(--radius-md); }
+
+    /* ── FOOTER ── */
+    .site-footer { background:var(--navy-mid); border-top:1px solid rgba(255,255,255,0.06); }
+    .footer-top  { padding:80px 0 60px; display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr; gap:48px; }
+    .footer-brand-desc { font-size:14px; color:var(--text-muted); line-height:1.8; margin-top:18px; max-width:300px; }
+    .footer-col-title  { font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin-bottom:20px; }
+    .footer-links { display:flex; flex-direction:column; gap:12px; }
+    .footer-link  { font-size:14px; color:var(--text-muted); transition:color 0.3s,padding-left 0.3s; }
+    .footer-link:hover { color:var(--white); padding-left:4px; }
+    .footer-bottom { border-top:1px solid rgba(255,255,255,0.06); padding:24px 0; display:flex; align-items:center; justify-content:space-between; }
+    .footer-copy  { font-size:13px; color:var(--text-muted); }
+
+    /* ── BACK TO TOP ── */
+    .back-top { position:fixed; bottom:28px; right:28px; width:46px; height:46px; background:linear-gradient(135deg,var(--violet),var(--purple)); border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; cursor:pointer; box-shadow:var(--shadow-md); opacity:0; transform:translateY(10px); transition:var(--transition); z-index:999; border:1px solid rgba(255,255,255,0.15); }
+    .back-top.visible { opacity:1; transform:translateY(0); }
+    .back-top:hover   { background:linear-gradient(135deg,var(--gold),var(--gold-light)); transform:translateY(-4px); }
+    .back-top svg { width:18px; height:18px; }
+
+    /* ── MOBILE NAV ── */
+    .mobile-nav { display:none; position:fixed; inset:0; background:rgba(8,9,26,0.97); backdrop-filter:blur(20px); z-index:1100; flex-direction:column; align-items:center; justify-content:center; gap:28px; }
+    .mobile-nav.open { display:flex; animation:fadeIn 0.3s; }
+    .mobile-nav .nav-link { font-size:22px; font-family:var(--font-display); font-weight:600; color:var(--text-body); }
+    .mobile-nav .nav-link:hover { color:var(--gold); }
+    .mobile-nav-close { position:absolute; top:28px; right:28px; width:44px; height:44px; display:flex; align-items:center; justify-content:center; border:1.5px solid rgba(255,255,255,0.2); border-radius:50%; color:var(--white); cursor:pointer; transition:var(--transition); }
+    .mobile-nav-close:hover { border-color:var(--gold); color:var(--gold); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width:1024px) {
+      .features-grid { grid-template-columns:repeat(2,1fr); }
+      .impact-grid   { grid-template-columns:repeat(2,1fr); }
+      .footer-top    { grid-template-columns:1fr 1fr; gap:36px; }
+      .sn-readers, .sn-stories, .sn-rating { display: none; }
+    }
+    @media (max-width:900px) {
+      .hero-grid    { grid-template-columns:1fr; }
+      .hero-visual  { display:none; }
+      .about-inner  { grid-template-columns:1fr; gap:40px; }
+      .about-visual { display:none; }
+      .genres-grid  { grid-template-columns:repeat(2,1fr); }
+      .site-nav     { display:none; }
+      .nav-toggle   { display:flex; }
+    }
+    @media (max-width:600px) {
+      .container     { padding:0 18px; }
+      .section       { padding:72px 0; }
+      .features-grid { grid-template-columns:1fr; }
+      .impact-grid   { grid-template-columns:1fr; }
+      .genres-grid   { grid-template-columns:1fr; }
+      .footer-top    { grid-template-columns:1fr; gap:32px; }
+      .footer-bottom { flex-direction:column; gap:10px; text-align:center; }
+      .hero-stats    { gap:20px; flex-wrap:wrap; }
+      .blog-card     { width:300px; }
+      .hero-actions  { flex-direction:column; align-items:flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header class="site-header" id="siteHeader">
+  <div class="container">
+    <div class="header-inner">
+
+      <a href="index.html" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
+        <img src="./assets/images/Mythos.png" alt="MYTHOS" style="width:50px;height:50px;object-fit:contain;">
+        <span style="font-family:Georgia,serif;font-size:20px;font-weight:700;color:white;letter-spacing:3px;">MYTHOS</span>
+      </a>
+
+      <nav class="site-nav">
+        <a href="index.html"    class="nav-link">Home</a>
+        <a href="genres.html"   class="nav-link">Genres</a>
+        <a href="about.html"    class="nav-link">About Us</a>
+        <a href="contact.html"  class="nav-link">Contact</a>
+        <a href="Feedback.html" class="nav-link">Feedback</a>
+      </nav>
+
+      <div class="header-actions">
+        <!-- SHOPPING CART ICON -->
+        <a href="Buybooks.html" class="header-icon-btn" title="Buy Books">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">
+            <circle cx="8" cy="21" r="1"/>
+            <circle cx="19" cy="21" r="1"/>
+            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 2-1.58L21.95 6H6"/>
+          </svg>
+        </a>
+        <!-- ACCOUNT ICON -->
+        <a href="login.html" class="header-icon-btn" title="Account" id="accountBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </a>
+        <button class="nav-toggle" id="navToggle" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>
+  </button>
+  <a href="index.html"    class="nav-link">Home</a>
+  <a href="genres.html"   class="nav-link">Genres</a>
+  <a href="about.html"    class="nav-link">About Us</a>
+  <a href="contact.html"  class="nav-link">Contact</a>
+  <a href="Feedback.html" class="nav-link">Feedback</a>
+</div>
+
+<main>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero" id="top">
+  <div class="hero-bg"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <div class="container" style="width:100%;">
+    <div class="hero-grid">
+
+      <!-- LEFT: Text content -->
+      <div class="hero-content">
+        <div class="hero-badge reveal">
+          <span class="hero-badge-dot"></span>
+          New stories added weekly
+        </div>
+
+        <h1 class="display-title hero-title reveal reveal-delay-1">
+          Where Stories<br><em>Come Alive</em>
+        </h1>
+
+        <p class="hero-desc reveal reveal-delay-2">
+          Discover an extraordinary universe of narratives that inspire, entertain, and transform. From timeless classics to contemporary masterpieces — experience the magic of storytelling like never before.
+        </p>
+
+        <div class="hero-actions reveal reveal-delay-3">
+          <a href="genres.html" class="btn-ghost">Explore Library</a>
+        </div>
+
+        <div class="hero-stats reveal reveal-delay-4">
+          <div class="stat-item">
+            <div class="stat-num">90+</div>
+            <div class="stat-label">Stories Published</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">12K+</div>
+            <div class="stat-label">Active Readers</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">98%</div>
+            <div class="stat-label">Satisfaction Rate</div>
+          </div>
+        </div>
+      </div><!-- /.hero-content -->
+
+      <!-- RIGHT: Book visual scene -->
+      <div class="hero-visual" id="heroVisual">
+
+        <div class="hv-amb hv-amb-v"></div>
+        <div class="hv-amb hv-amb-g"></div>
+        <div class="hv-amb hv-amb-c"></div>
+
+        <div class="hv-ring hv-ring-1"></div>
+        <div class="hv-ring hv-ring-2"></div>
+
+        <!-- Star dots -->
+        <div class="sd" style="top:12%;left:10%; width:5px;height:5px;background:rgba(200,152,58,0.8);box-shadow:0 0 8px rgba(200,152,58,0.4);--sdd:3.2s;--sdel:0s;"></div>
+        <div class="sd" style="top:25%;left:25%; width:3px;height:3px;background:rgba(200,152,58,0.5);--sdd:4s;--sdel:0.8s;"></div>
+        <div class="sd" style="top:75%;left:15%; width:4px;height:4px;background:rgba(200,152,58,0.6);--sdd:2.8s;--sdel:1.5s;"></div>
+        <div class="sd" style="top:18%;right:12%;width:5px;height:5px;background:rgba(160,132,255,0.75);--sdd:3s;--sdel:0.5s;"></div>
+        <div class="sd" style="top:65%;right:10%;width:4px;height:4px;background:rgba(160,132,255,0.65);--sdd:2.6s;--sdel:0s;"></div>
+        <div class="sd" style="top:88%;right:25%;width:3px;height:3px;background:rgba(200,152,58,0.5);--sdd:4.2s;--sdel:2s;"></div>
+
+        <!-- Floating words -->
+        <span class="fw md fw-gold"   style="top:10%;left:5%;   --wdur:9s;  --wdelay:0s;">Stories</span>
+        <span class="fw sm fw-violet" style="top:20%;right:4%;  --wdur:11s; --wdelay:1.5s;">Magic</span>
+        <span class="fw md fw-gold"   style="top:72%;left:4%;   --wdur:10s; --wdelay:2.8s;">Dream</span>
+        <span class="fw sm fw-violet" style="top:80%;right:6%;  --wdur:8s;  --wdelay:0.7s;">Wonder</span>
+        <span class="fw lg fw-gold"   style="top:5%; right:15%; --wdur:10s; --wdelay:4s;">Journey</span>
+        <span class="fw sm fw-violet" style="top:50%;right:3%;  --wdur:9.5s;--wdelay:1.2s;">Lore</span>
+
+        <!-- Sparkles -->
+        <div class="sp" style="top:24%;left:16%;  width:5px;height:5px;background:rgba(200,152,58,0.9);box-shadow:0 0 6px rgba(200,152,58,0.5);--sdur:7s; --sdelay:0s;"></div>
+        <div class="sp" style="top:60%;left:10%;  width:3px;height:3px;background:rgba(200,152,58,0.7);box-shadow:0 0 6px rgba(200,152,58,0.4);--sdur:9s; --sdelay:1.3s;"></div>
+        <div class="sp" style="top:38%;right:8%;  width:4px;height:4px;background:rgba(176,150,255,0.85);box-shadow:0 0 6px rgba(176,150,255,0.4);--sdur:8s; --sdelay:2.1s;"></div>
+        <div class="sp" style="top:70%;right:18%; width:5px;height:5px;background:rgba(200,152,58,0.75);box-shadow:0 0 6px rgba(200,152,58,0.4);--sdur:6s; --sdelay:0.6s;"></div>
+
+        <div class="book-glow-base"></div>
+
+        <!-- THE BOOK -->
+        <div class="hero-img-frame reveal reveal-delay-2" id="heroBook">
+          <img src="./assets/images/hero-banner.png" alt="MYTHOS storytelling">
+        </div>
+
+        <!-- STAT NODES -->
+        <div class="stat-node sn-readers">
+          <div class="stat-pill">
+            <div class="stat-orb">👥</div>
+            <div class="stat-text">
+              <span class="stat-val">12K+</span>
+              <span class="stat-lbl">Active Readers</span>
+            </div>
+          </div>
+          <div class="stat-connector"></div>
+          <div class="stat-dot"></div>
+        </div>
+
+        <div class="stat-node sn-stories">
+          <div class="stat-dot"></div>
+          <div class="stat-connector"></div>
+          <div class="stat-pill">
+            <div class="stat-orb">📚</div>
+            <div class="stat-text">
+              <span class="stat-val">90+</span>
+              <span class="stat-lbl">Stories Published</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-node sn-rating">
+          <div class="stat-pill">
+            <div class="stat-orb">⭐</div>
+            <div class="stat-text">
+              <span class="stat-val">98%</span>
+              <span class="stat-lbl">Satisfaction Rate</span>
+            </div>
+          </div>
+          <div class="stat-connector"></div>
+          <div class="stat-dot"></div>
+        </div>
+
+      </div><!-- /.hero-visual -->
+
+    </div><!-- /.hero-grid -->
+  </div>
+
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══ FEATURES ═══ -->
+<section class="section section-dark" aria-label="why mythos">
+  <div class="container">
+    <div class="section-header centered">
+      <span class="section-eyebrow reveal">Why MYTHOS</span>
+      <h2 class="section-heading reveal reveal-delay-1">Crafted for Every Reader</h2>
+      <p class="section-sub reveal reveal-delay-2">A platform built around the love of stories — secure, accessible, and endlessly inspiring.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon">📖</div>
+        <div class="feature-title">Curated Collections</div>
+        <p class="feature-text">Handpicked stories across all genres and age groups, ensuring quality and diversity in every selection.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon">🔒</div>
+        <div class="feature-title">Safe &amp; Secure</div>
+        <p class="feature-text">Experience reading with complete privacy. Your data is protected with industry-leading encryption.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon">♾️</div>
+        <div class="feature-title">Unlimited Access</div>
+        <p class="feature-text">Explore thousands of stories without limitations. Read anywhere, anytime, on any device.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-4">
+        <div class="feature-icon">🌍</div>
+        <div class="feature-title">Community Driven</div>
+        <p class="feature-text">Connect with fellow book lovers, share recommendations, and build your reading community.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══ ABOUT ═══ -->
+<section class="section about-section" aria-label="about mythos">
+  <div class="about-bg"></div>
+  <div class="container">
+    <div class="about-inner">
+      <div class="about-visual reveal">
+        <div class="about-ring about-ring-1"></div>
+        <div class="about-ring about-ring-2"></div>
+        <div class="about-pill ap1"><div><div class="about-pill-num">90+</div><div class="about-pill-label">Stories<br>Published</div></div></div>
+        <div class="about-pill ap2"><div><div class="about-pill-num">12K+</div><div class="about-pill-label">Active<br>Readers</div></div></div>
+        <div class="about-pill ap3"><div><div class="about-pill-num">98%</div><div class="about-pill-label">Satisfaction<br>Rate</div></div></div>
+        <div class="about-book-card">
+          <svg class="about-book-svg" width="72" height="56" viewBox="0 0 72 56" fill="none">
+            <rect x="2" y="6" width="30" height="44" rx="3" fill="rgba(200,152,58,0.12)" stroke="rgba(200,152,58,0.5)" stroke-width="1.5"/>
+            <rect x="40" y="6" width="30" height="44" rx="3" fill="rgba(108,79,212,0.12)" stroke="rgba(108,79,212,0.5)" stroke-width="1.5"/>
+            <line x1="9"  y1="18" x2="27" y2="18" stroke="rgba(200,152,58,0.3)" stroke-width="1"/>
+            <line x1="9"  y1="24" x2="27" y2="24" stroke="rgba(200,152,58,0.25)" stroke-width="1"/>
+            <line x1="9"  y1="30" x2="27" y2="30" stroke="rgba(200,152,58,0.2)" stroke-width="1"/>
+            <line x1="45" y1="18" x2="63" y2="18" stroke="rgba(156,128,255,0.3)" stroke-width="1"/>
+            <line x1="45" y1="24" x2="63" y2="24" stroke="rgba(156,128,255,0.25)" stroke-width="1"/>
+            <line x1="45" y1="30" x2="63" y2="30" stroke="rgba(156,128,255,0.2)" stroke-width="1"/>
+            <line x1="36" y1="6"  x2="36" y2="50" stroke="url(#spG)" stroke-width="2"/>
+            <defs>
+              <linearGradient id="spG" x1="36" y1="6" x2="36" y2="50" gradientUnits="userSpaceOnUse">
+                <stop offset="0%"   stop-color="#c8983a" stop-opacity="0.8"/>
+                <stop offset="50%"  stop-color="#e8b84b" stop-opacity="1"/>
+                <stop offset="100%" stop-color="#c8983a" stop-opacity="0.8"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <p class="about-book-quote">"Every story is a journey waiting to begin."</p>
+          <span class="about-book-author">— The MYTHOS Manifesto</span>
+        </div>
+      </div>
+      <div>
+        <span class="section-eyebrow reveal">Our Story</span>
+        <h2 class="section-heading reveal reveal-delay-1">About MYTHOS</h2>
+        <p class="section-sub reveal reveal-delay-2" style="margin-top:16px;">A modern digital storytelling platform dedicated to bringing extraordinary tales to readers worldwide.</p>
+        <div class="about-body" style="margin-top:32px;">
+          <p class="about-para reveal reveal-delay-2">MYTHOS is a modern digital storytelling platform dedicated to bringing extraordinary tales to readers worldwide. We believe that every story has the power to inspire, teach, and transform. Our mission is to make quality literature accessible to everyone, regardless of location or background.</p>
+          <p class="about-para reveal reveal-delay-3">Through our carefully curated collections, we celebrate diverse voices and timeless narratives that connect us all through the universal language of storytelling.</p>
+          <p class="about-para reveal reveal-delay-4">Founded on the principle that stories matter, MYTHOS combines cutting-edge technology with a passion for literature — where readers discover their next favourite tale and where the magic of imagination knows no bounds.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══ GENRES ═══ -->
+<section class="section section-mid" aria-label="explore genres">
+  <div class="container">
+    <div class="section-header centered">
+      <span class="section-eyebrow reveal">Browse</span>
+      <h2 class="section-heading reveal reveal-delay-1">Explore Genres</h2>
+      <p class="section-sub reveal reveal-delay-2">Find your next favourite story — pick a genre and dive right in.</p>
+    </div>
+    <div class="genres-grid">
+      <a href="library.html?genre=fantasy"   class="genre-card gc1 reveal reveal-delay-1"><span class="genre-badge">24 Stories</span><div class="genre-name">Fantasy</div><p class="genre-desc">Mythical worlds, epic quests, and the magic of imagination unleashed.</p></a>
+      <a href="library.html?genre=romance"   class="genre-card gc2 reveal reveal-delay-2"><span class="genre-badge">18 Stories</span><div class="genre-name">Romance</div><p class="genre-desc">Stories of love, heartbreak, and the connections that define us.</p></a>
+      <a href="library.html?genre=scifi"     class="genre-card gc3 reveal reveal-delay-3"><span class="genre-badge">16 Stories</span><div class="genre-name">Sci-Fi</div><p class="genre-desc">Explore the future, alternate realities, and the wonders of science.</p></a>
+      <a href="library.html?genre=mystery"   class="genre-card gc4 reveal reveal-delay-1"><span class="genre-badge">15 Stories</span><div class="genre-name">Mystery</div><p class="genre-desc">Gripping tales of suspense, secrets, and the search for truth.</p></a>
+      <a href="library.html?genre=childrens" class="genre-card gc5 reveal reveal-delay-2"><span class="genre-badge">12 Stories</span><div class="genre-name">Children's</div><p class="genre-desc">Magical adventures crafted for young readers discovering their first love of books.</p></a>
+      <a href="library.html?genre=literary"  class="genre-card gc6 reveal reveal-delay-3"><span class="genre-badge">10 Stories</span><div class="genre-name">Literary</div><p class="genre-desc">Classic and contemporary works that illuminate the depth of human experience.</p></a>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══ IMPACT ═══ -->
+<section class="section section-dark" aria-label="our impact">
+  <div class="container">
+    <div class="section-header centered">
+      <span class="section-eyebrow reveal">By the Numbers</span>
+      <h2 class="section-heading reveal reveal-delay-1">Our Impact</h2>
+      <p class="section-sub reveal reveal-delay-2">Thousands of readers. Hundreds of stories. One shared love of literature.</p>
+    </div>
+    <div class="impact-grid">
+      <div class="impact-card reveal reveal-delay-1">
+        <div class="impact-icon">📖</div>
+        <div class="impact-num">90+</div>
+        <div class="impact-label">Stories Published</div>
+        <p class="impact-text">A diverse collection spanning multiple genres and cultures.</p>
+      </div>
+      <div class="impact-card reveal reveal-delay-2">
+        <div class="impact-icon">👥</div>
+        <div class="impact-num">12K+</div>
+        <div class="impact-label">Active Readers</div>
+        <p class="impact-text">A thriving global community of book lovers engaging daily.</p>
+      </div>
+      <div class="impact-card reveal reveal-delay-3">
+        <div class="impact-icon">🏷️</div>
+        <div class="impact-num">6+</div>
+        <div class="impact-label">Genres Covered</div>
+        <p class="impact-text">From fantasy to literary fiction — something for every reader.</p>
+      </div>
+      <div class="impact-card reveal reveal-delay-4">
+        <div class="impact-icon">⭐</div>
+        <div class="impact-num">98%</div>
+        <div class="impact-label">Satisfaction Rate</div>
+        <p class="impact-text">Readers consistently rate MYTHOS as their preferred platform.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══ BLOG ═══ -->
+<section class="section section-mid" aria-label="blog">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-eyebrow reveal">Read &amp; Discover</span>
+      <h2 class="section-heading reveal reveal-delay-1">Latest Stories &amp; Insights</h2>
+      <p class="section-sub reveal reveal-delay-2">Author spotlights, literary insights, and the latest from the world of storytelling.</p>
+    </div>
+    <div class="blog-scroll-wrap reveal reveal-delay-1">
+      <div class="blog-track">
+        <div class="blog-card">
+          <div class="blog-img"><img src="./assets/images/blog-1.jpg" alt="The Power of Storytelling" loading="lazy"></div>
+          <div class="blog-body">
+            <div class="blog-meta"><span class="blog-date">04 March, 2026</span><span class="blog-comments">12 comments</span></div>
+            <h3 class="blog-title">The Power of Storytelling in the Digital Age</h3>
+            <p class="blog-excerpt">Discover how storytelling continues to shape our understanding of the world, connecting hearts and minds across cultures and generations through timeless narratives.</p>
+            <a href="#" class="blog-link">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+        </div>
+        <div class="blog-card">
+          <div class="blog-img"><img src="./assets/images/blog-2.jpg" alt="Journey Through Literary Worlds" loading="lazy"></div>
+          <div class="blog-body">
+            <div class="blog-meta"><span class="blog-date">04 March, 2026</span><span class="blog-comments">8 comments</span></div>
+            <h3 class="blog-title">Journey Through Literary Worlds and Imagination</h3>
+            <p class="blog-excerpt">Experience the transformative magic of stepping into imaginary worlds where anything is possible. Literature remains humanity's greatest escape and greatest teacher.</p>
+            <a href="#" class="blog-link">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+        </div>
+        <div class="blog-card">
+          <div class="blog-img"><img src="./assets/images/blog-3.jpg" alt="Authors and Their Craft" loading="lazy"></div>
+          <div class="blog-body">
+            <div class="blog-meta"><span class="blog-date">04 March, 2026</span><span class="blog-comments">15 comments</span></div>
+            <h3 class="blog-title">Meeting Authors: Behind the Stories We Love</h3>
+            <p class="blog-excerpt">Get exclusive insights from renowned authors about their creative process, inspirations, and the transformative moments that shaped their most celebrated works.</p>
+            <a href="#" class="blog-link">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ═══ VIDEO MODAL ═══ -->
+<div class="video-overlay" id="videoOverlay">
+  <div class="video-box">
+    <button class="video-close" onclick="closeVideoModal()" aria-label="Close video">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    <div class="video-ratio">
+      <video id="mythosvideo" controls>
+        <source src="./assets/videos/MYTHOS.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="index.html" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
+          <img src="./assets/images/Mythos.png" alt="MYTHOS" style="width:50px;height:50px;object-fit:contain;">
+          <span style="font-family:Georgia,serif;font-size:20px;font-weight:700;color:white;letter-spacing:3px;">MYTHOS</span>
+        </a>
+        <p class="footer-brand-desc">A modern digital storytelling platform where extraordinary tales come alive for readers and creators across the world.</p>
+      </div>
+      <div>
+        <p class="footer-col-title">Platform</p>
+        <ul class="footer-links">
+          <li><a href="#"            class="footer-link">Creator Program</a></li>
+          <li><a href="about.html"   class="footer-link">About MYTHOS</a></li>
+          <li><a href="contact.html" class="footer-link">Contact Us</a></li>
+          <li><a href="#"            class="footer-link">Help Center</a></li>
+          <li><a href="#"            class="footer-link">Publishing Partners</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">Reading</p>
+        <ul class="footer-links">
+          <li><a href="library.html" class="footer-link">Story Library</a></li>
+          <li><a href="#"            class="footer-link">Privacy Policy</a></li>
+          <li><a href="#"            class="footer-link">Reader Guidelines</a></li>
+          <li><a href="#"            class="footer-link">Offline Reading</a></li>
+          <li><a href="#"            class="footer-link">Terms of Service</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">Explore</p>
+        <ul class="footer-links">
+          <li><a href="library.html" class="footer-link">Featured Stories</a></li>
+          <li><a href="genres.html"  class="footer-link">All Genres</a></li>
+          <li><a href="about.html"   class="footer-link">Author Spotlights</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 MYTHOS — Where Stories Come Alive. All rights reserved.</p>
+      <a href="tel:+917618744766" class="footer-copy" style="color:var(--gold);">91-7618744766</a>
+    </div>
+  </div>
+</footer>
+
+<!-- BACK TO TOP -->
+<button class="back-top" id="backTop" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
+
+<!-- ═══════════════════════════════════════════
+     SCRIPT — Firebase wrapped in try/catch so
+     the page always works even if Firebase is
+     unavailable or firebase-config.js is missing.
+═══════════════════════════════════════════ -->
+<script type="module">
+
+  /* ── Firebase: check session & update header (SAFE — won't break page if missing) ── */
+  try {
+    const { isLoggedIn, getCurrentUser, logOut } = await import("./firebase-config.js");
+    const accountBtn = document.getElementById('accountBtn');
+    if (accountBtn && isLoggedIn()) {
+      const user = getCurrentUser();
+      accountBtn.setAttribute("title", `Logged in as ${user.name}`);
+      accountBtn.innerHTML = `
+        <span style="
+          font-family: var(--font-display);
+          font-size: 15px;
+          font-weight: 700;
+          color: var(--gold-light);
+          line-height: 1;
+          letter-spacing: 0.5px;
+        ">${(user.name || "U")[0].toUpperCase()}</span>
+      `;
+      accountBtn.addEventListener("click", async (e) => {
+        e.preventDefault();
+        if (confirm(`Logged in as ${user.name}.\n\nClick OK to log out.`)) {
+          await logOut();
+        }
+      });
+    }
+  } catch (e) {
+    /* Firebase not available — page continues normally */
+    console.warn("Firebase session check skipped:", e.message);
+  }
+
+  /* ── Header scroll + Back to Top ── */
+  const header  = document.getElementById('siteHeader');
+  const backTop = document.getElementById('backTop');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 60);
+    backTop.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+
+  /* ── Scroll Reveal ── */
+  const revealObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        revealObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+  /* ── Video Modal ── */
+  const videoOverlay = document.getElementById('videoOverlay');
+  const mythosvideo  = document.getElementById('mythosvideo');
+
+  window.openVideoModal = function() {
+    videoOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    mythosvideo.play();
+  };
+  window.closeVideoModal = function() {
+    videoOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+    mythosvideo.pause();
+    mythosvideo.currentTime = 0;
+  };
+  videoOverlay.addEventListener('click', e => {
+    if (e.target === videoOverlay) window.closeVideoModal();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') window.closeVideoModal();
+  });
+
+  /* ── Mobile Nav ── */
+  const navToggle      = document.getElementById('navToggle');
+  const mobileNav      = document.getElementById('mobileNav');
+  const mobileNavClose = document.getElementById('mobileNavClose');
+  navToggle.addEventListener('click',      () => mobileNav.classList.add('open'));
+  mobileNavClose.addEventListener('click', () => mobileNav.classList.remove('open'));
+  mobileNav.querySelectorAll('.nav-link').forEach(l =>
+    l.addEventListener('click', () => mobileNav.classList.remove('open'))
+  );
+
+  /* ── Hero 3D tilt ── */
+  (function() {
+    const visual = document.getElementById('heroVisual');
+    const book   = document.getElementById('heroBook');
+    if (!visual || !book) return;
+
+    let raf = null, targetX = 0, targetY = 0, currentX = 0, currentY = 0;
+
+    function onMove(e) {
+      const rect = visual.getBoundingClientRect();
+      targetX = ((e.clientX - rect.left)  / rect.width  - 0.5) * 2;
+      targetY = ((e.clientY - rect.top)   / rect.height - 0.5) * 2;
+      if (!raf) raf = requestAnimationFrame(animate);
+    }
+    function onLeave() {
+      targetX = 0; targetY = 0;
+      if (!raf) raf = requestAnimationFrame(animate);
+    }
+    function animate() {
+      currentX += (targetX - currentX) * 0.08;
+      currentY += (targetY - currentY) * 0.08;
+      book.style.transform = `perspective(900px) rotateX(${-currentY * 10}deg) rotateY(${currentX * 10}deg)`;
+      const still = Math.abs(targetX - currentX) > 0.001 || Math.abs(targetY - currentY) > 0.001;
+      raf = still ? requestAnimationFrame(animate) : null;
+    }
+
+    visual.addEventListener('mousemove',  onMove,  { passive: true });
+    visual.addEventListener('mouseleave', onLeave);
+    visual.addEventListener('touchmove', e => {
+      const t = e.touches[0], rect = visual.getBoundingClientRect();
+      targetX = ((t.clientX - rect.left) / rect.width  - 0.5) * 2;
+      targetY = ((t.clientY - rect.top)  / rect.height - 0.5) * 2;
+      if (!raf) raf = requestAnimationFrame(animate);
+    }, { passive: true });
+    visual.addEventListener('touchend', onLeave, { passive: true });
+  })();
+
+</script>
+
+</body>
+</html>

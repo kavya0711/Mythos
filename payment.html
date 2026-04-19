@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mythos - Payment Portal</title>
+</head>
+<body style="display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; margin: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px;">
+
+    <div style="text-align: center; margin-bottom: 30px;">
+        <h1 style="color: white; font-size: 3rem; margin: 0; letter-spacing: 2px; text-shadow: 2px 2px 10px rgba(0,0,0,0.3);">MYTHOS</h1>
+        <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem; margin-top: 5px; font-style: italic;">Your Gateway to Infinite Stories</p>
+    </div>
+
+    <div style="background: white; padding: 0; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); display: flex; max-width: 850px; width: 100%; overflow: hidden; flex-wrap: wrap;">
+        
+        <div style="flex: 1; min-width: 300px; background-color: #fcfaff; padding: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-right: 1px solid #eee;">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h3 style="margin: 0; color: #333; font-size: 20px;">Scan to Subscribe</h3>
+                <p style="color: #666; font-size: 14px; margin-top: 5px;">Secure UPI Payment</p>
+            </div>
+            
+            <div style="background: white; padding: 15px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                <div style="width: 180px; height: 180px; background: #eee; display: flex; align-items: center; justify-content: center; color: #999; font-size: 12px; text-align: center;">[Your QR Code Here]</div>
+            </div>
+            
+            <p style="margin-top: 25px; font-weight: bold; font-size: 16px; color: #764ba2;">Mythos Premium Access</p>
+        </div>
+
+        <div style="flex: 1; min-width: 300px; padding: 40px;">
+            <h2 style="margin-top: 0; color: #333; font-size: 24px;">Verification Form</h2>
+            
+            <form action="/submit-payment" method="POST">
+                <div style="margin-bottom: 12px;">
+                    <label style="display: block; margin-bottom: 4px; font-size: 13px; font-weight: 600; color: #444;">Username</label>
+                    <input type="text" name="username" placeholder="Reader Name" required 
+                           style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;">
+                </div>
+
+                <div style="margin-bottom: 12px;">
+                    <label style="display: block; margin-bottom: 4px; font-size: 13px; font-weight: 600; color: #444;">Email Address</label>
+                    <input type="email" name="email" placeholder="example@mail.com" required 
+                           style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;">
+                </div>
+
+                <div style="margin-bottom: 12px;">
+                    <label style="display: block; margin-bottom: 4px; font-size: 13px; font-weight: 600; color: #444;">Phone Number (10 Digits)</label>
+                    <input type="tel" name="phone" placeholder="9876543210" 
+                           pattern="[0-9]{10}" maxlength="10" inputmode="numeric"
+                           oninput="this.value = this.value.replace(/[^0-9]/g, '');" required 
+                           style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;">
+                </div>
+
+                <div style="margin-top: 20px; padding: 15px; background: #f0ebf7; border-radius: 8px; border-left: 5px solid #764ba2;">
+                    <label for="transaction_id" style="display: block; margin-bottom: 8px; font-size: 13px; font-weight: bold; color: #764ba2;">ENTER 12-DIGIT PAYMENT ID</label>
+                    <input type="text" 
+                           id="transaction_id" 
+                           name="transaction_id" 
+                           placeholder="012345678901" 
+                           pattern="[0-9]{12}" 
+                           maxlength="12" 
+                           inputmode="numeric"
+                           oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                           required 
+                           style="width: 100%; padding: 12px; border: 2px solid #764ba2; border-radius: 6px; box-sizing: border-box; font-size: 16px; letter-spacing: 2px; font-weight: bold;">
+                </div>
+
+                <button type="submit" style="width: 100%; margin-top: 20px; padding: 14px; cursor: pointer; background: #764ba2; color: white; border: none; border-radius: 6px; font-weight: bold; font-size: 15px;">
+                    SUBMIT
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <p style="color: rgba(255,255,255,0.7); font-size: 12px; margin-top: 20px;">© 2026 Mythos E-Reading App.</p>
+
+</body>
+</html>

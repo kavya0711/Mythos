@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library - MYTHOS</title>
+  <meta name="description" content="MYTHOS Reading Library">
+
+  <link rel="shortcut icon" href="./assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./assets/css/style.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Work+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --xiketic: #0f0f23;
+      --oxford-blue: #1a1a3e;
+      --jet: #2a2a4e;
+      --white_10: rgba(255, 255, 255, 0.1);
+      --white-1: #ffffff;
+      --white-2: #f0f0f0;
+      --spanish-gray: #9c9c9c;
+      --maximum-blue-green: #1dd4bf;
+      --selective-yellow: #ffb700;
+      --transition-1: 0.25s ease;
+      --ff-jost: 'Jost', sans-serif;
+      --fs-6: 0.875rem;
+      --fs-7: 0.75rem;
+      --fw-500: 500;
+      --fw-600: 600;
+      --fw-700: 700;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Work Sans', sans-serif;
+      background: linear-gradient(135deg, var(--xiketic) 0%, var(--oxford-blue) 100%);
+      color: var(--white-1);
+      min-height: 100vh;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      background: var(--oxford-blue);
+      border-bottom: 1px solid var(--white_10);
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+
+    .navbar-brand {
+      font-size: 24px;
+      font-weight: var(--fw-700);
+      color: var(--maximum-blue-green);
+      text-decoration: none;
+      font-family: var(--ff-jost);
+      letter-spacing: 2px;
+    }
+
+    .navbar-user {
+      color: var(--white-2);
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .logout-btn {
+      background: rgba(29, 212, 191, 0.2);
+      color: var(--maximum-blue-green);
+      border: 1px solid var(--maximum-blue-green);
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: var(--fw-600);
+      transition: var(--transition-1);
+      font-size: var(--fs-6);
+    }
+
+    .logout-btn:hover {
+      background: var(--maximum-blue-green);
+      color: var(--xiketic);
+    }
+
+    /* MAIN CONTAINER */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .library-header {
+      margin-bottom: 50px;
+      animation: fadeIn 0.6s ease;
+      text-align: center;
+    }
+
+    .library-header h1 {
+      font-size: 36px;
+      margin-bottom: 10px;
+      color: var(--white-1);
+      font-family: var(--ff-jost);
+      font-weight: var(--fw-700);
+      letter-spacing: 1px;
+    }
+
+    .library-header p {
+      color: var(--spanish-gray);
+      font-size: 16px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* SECTIONS */
+    .section {
+      margin-bottom: 60px;
+    }
+
+    .section-title {
+      font-size: 24px;
+      font-weight: var(--fw-700);
+      margin-bottom: 10px;
+      color: var(--white-1);
+      display: inline-block;
+      font-family: var(--ff-jost);
+      letter-spacing: 1px;
+    }
+
+    .section-subtitle {
+      font-size: 14px;
+      color: var(--spanish-gray);
+      margin-bottom: 20px;
+      display: block;
+      font-weight: var(--fw-500);
+    }
+
+    .subsection {
+      margin-bottom: 40px;
+    }
+
+    .subsection-title {
+      font-size: 18px;
+      font-weight: var(--fw-600);
+      color: var(--maximum-blue-green);
+      margin-bottom: 15px;
+      border-left: 4px solid var(--maximum-blue-green);
+      padding-left: 15px;
+      font-family: var(--ff-jost);
+    }
+
+    /* BOOKS GRID */
+    .books-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 20px;
+      animation: gridFadeIn 0.6s ease 0.1s both;
+    }
+
+    @keyframes gridFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* BOOK CARD */
+    .book-card {
+      background: var(--oxford-blue);
+      border: 1px solid var(--jet);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      transition: var(--transition-1);
+      cursor: pointer;
+    }
+
+    .book-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--maximum-blue-green);
+      box-shadow: 0 12px 40px rgba(29, 212, 191, 0.2);
+    }
+
+    .book-cover {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: linear-gradient(135deg, var(--jet) 0%, var(--xiketic) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white-1);
+      font-size: 12px;
+      text-align: center;
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .book-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .book-cover::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(29, 212, 191, 0.1) 0%, transparent 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .book-cover .cover-fallback {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px;
+      font-size: 13px;
+      font-weight: var(--fw-600);
+      color: var(--white-2);
+      text-align: center;
+      line-height: 1.4;
+      z-index: 0;
+    }
+
+    .book-info {
+      padding: 15px;
+    }
+
+    .book-title {
+      font-size: 14px;
+      font-weight: var(--fw-700);
+      color: var(--white-1);
+      margin-bottom: 6px;
+      line-height: 1.3;
+      min-height: 42px;
+    }
+
+    .book-genre {
+      font-size: 11px;
+      color: var(--maximum-blue-green);
+      font-weight: var(--fw-600);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .read-btn {
+      width: 100%;
+      padding: 10px;
+      background: var(--maximum-blue-green);
+      color: var(--xiketic);
+      border: 1px solid var(--maximum-blue-green);
+      border-radius: 6px;
+      font-weight: var(--fw-600);
+      cursor: pointer;
+      transition: var(--transition-1);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .read-btn:hover {
+      background: transparent;
+      color: var(--maximum-blue-green);
+      box-shadow: 0 0 0 2px var(--maximum-blue-green);
+    }
+
+    .read-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* READER MODAL */
+    .reader-modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--xiketic) 0%, var(--oxford-blue) 100%);
+      animation: fadeInReader 0.4s ease;
+      flex-direction: column;
+    }
+
+    .reader-modal.active {
+      display: flex;
+    }
+
+    @keyframes fadeInReader {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .reader-header {
+      background: var(--oxford-blue);
+      border-bottom: 1px solid var(--white_10);
+      color: var(--white-1);
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .reader-title {
+      font-size: 22px;
+      font-weight: var(--fw-700);
+      letter-spacing: 0.5px;
+      color: var(--maximum-blue-green);
+      font-family: var(--ff-jost);
+    }
+
+    .close-btn {
+      background: rgba(29, 212, 191, 0.2);
+      color: var(--maximum-blue-green);
+      border: 1px solid var(--maximum-blue-green);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+      transition: var(--transition-1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .close-btn:hover {
+      background: var(--maximum-blue-green);
+      color: var(--xiketic);
+      transform: rotate(90deg);
+    }
+
+    .reader-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      perspective: 1200px;
+    }
+
+    .page-wrapper {
+      width: 100%;
+      max-width: 700px;
+      height: 600px;
+      position: relative;
+    }
+
+    .page {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, #faf8f3 0%, #f5f3ed 100%);
+      padding: 50px 40px;
+      border-radius: 4px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), inset -2px 0 10px rgba(0, 0, 0, 0.05);
+      overflow-y: auto;
+      line-height: 1.8;
+      color: #333;
+      font-size: 16px;
+      font-family: 'Georgia', 'Times New Roman', serif;
+      opacity: 0;
+      transform: translateX(100px) rotateY(45deg);
+      pointer-events: none;
+      transition: all 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      transform-style: preserve-3d;
+    }
+
+    .page.active {
+      opacity: 1;
+      transform: translateX(0) rotateY(0deg);
+      pointer-events: auto;
+      z-index: 10;
+    }
+
+    .page.exit-left {
+      opacity: 0;
+      transform: translateX(-100px) rotateY(-45deg);
+    }
+
+    .page.exit-right {
+      opacity: 0;
+      transform: translateX(100px) rotateY(45deg);
+    }
+
+    .page h2 {
+      color: #667eea;
+      font-size: 24px;
+      margin-bottom: 25px;
+      text-align: center;
+      border-bottom: 2px solid #667eea;
+      padding-bottom: 15px;
+    }
+
+    .page p {
+      margin-bottom: 18px;
+      text-align: justify;
+      text-indent: 2em;
+    }
+
+    .page p:first-of-type {
+      text-indent: 0;
+    }
+
+    .page::-webkit-scrollbar { width: 8px; }
+    .page::-webkit-scrollbar-track { background: transparent; }
+    .page::-webkit-scrollbar-thumb { background: #667eea; border-radius: 4px; }
+    .page::-webkit-scrollbar-thumb:hover { background: #764ba2; }
+
+    .reader-footer {
+      background: var(--oxford-blue);
+      border-top: 1px solid var(--white_10);
+      padding: 25px 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      flex-wrap: wrap;
+      box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .control-btn {
+      background: var(--maximum-blue-green);
+      color: var(--xiketic);
+      border: 1px solid var(--maximum-blue-green);
+      padding: 12px 28px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: var(--fw-600);
+      font-size: 15px;
+      transition: var(--transition-1);
+      min-width: 110px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .control-btn:hover:not(:disabled) {
+      transform: translateY(-3px);
+      background: transparent;
+      color: var(--maximum-blue-green);
+      box-shadow: 0 0 0 2px var(--maximum-blue-green);
+    }
+
+    .control-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .page-counter {
+      color: var(--white-1);
+      font-weight: var(--fw-600);
+      font-size: 16px;
+      min-width: 120px;
+      text-align: center;
+      background: rgba(29, 212, 191, 0.1);
+      padding: 10px 20px;
+      border-radius: 6px;
+      border: 1px solid var(--white_10);
+    }
+
+    .progress-bar {
+      width: 200px;
+      height: 6px;
+      background: var(--jet);
+      border-radius: 3px;
+      overflow: hidden;
+      border: 1px solid var(--white_10);
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--maximum-blue-green) 0%, var(--selective-yellow) 100%);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .navbar { padding: 15px 20px; }
+      .navbar-brand { font-size: 20px; }
+      .navbar-user { font-size: 12px; gap: 10px; }
+      .library-header h1 { font-size: 28px; }
+      .container { padding: 20px 15px; }
+      .books-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; }
+      .book-cover { height: 200px; }
+      .section { margin-bottom: 40px; }
+      .reader-header { padding: 15px 20px; }
+      .reader-title { font-size: 16px; }
+      .reader-container { padding: 20px 10px; }
+      .page-wrapper { max-width: 90vw; height: 500px; }
+      .page { padding: 30px 25px; font-size: 15px; }
+      .page h2 { font-size: 20px; }
+      .reader-footer { gap: 15px; padding: 15px 20px; }
+      .control-btn { padding: 10px 20px; font-size: 14px; min-width: 90px; }
+      .page-counter { min-width: 100px; font-size: 14px; }
+      .progress-bar { display: none; }
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <!-- NAVIGATION -->
+  <nav class="navbar">
+    <div class="navbar-brand">MYTHOS</div>
+    <div class="navbar-user">
+      <span id="userEmail"></span>
+      <button class="logout-btn" onclick="handleLogout()">Logout</button>
+    </div>
+  </nav>
+
+  <!-- LIBRARY SECTION -->
+  <div id="librarySection" class="library-section">
+    <div class="container">
+      <div class="library-header">
+        <h1>My Reading Library</h1>
+        <p>Discover stories across all genres and ages</p>
+      </div>
+
+      <!-- KIDS SECTION -->
+      <div class="section">
+        <h2 class="section-title">Kids (0-12 Years)</h2>
+        <span class="section-subtitle">Stories for young readers</span>
+        <div class="subsection"><h3 class="subsection-title">Adventure / Fun</h3><div class="books-grid" id="kidsAdventure"></div></div>
+        <div class="subsection"><h3 class="subsection-title">Fairy / Fantasy</h3><div class="books-grid" id="kidsFairy"></div></div>
+        <div class="subsection"><h3 class="subsection-title">Bedtime</h3><div class="books-grid" id="kidsBedtime"></div></div>
+        <div class="subsection"><h3 class="subsection-title">Animal Stories</h3><div class="books-grid" id="kidsAnimal"></div></div>
+        <div class="subsection"><h3 class="subsection-title">Moral Stories</h3><div class="books-grid" id="kidsMoral"></div></div>
+        <div class="subsection"><h3 class="subsection-title">Kids Mystery</h3><div class="books-grid" id="kidsMystery"></div></div>
+      </div>
+
+      <!-- TEENS SECTION -->
+      <div class="section">
+        <h2 class="section-title">Teens (13-18 Years)</h2>
+        <span class="section-subtitle">Coming-of-age and thrilling stories</span>
+        <div class="subsection"><h3 class="subsection-title">Romance / Drama</h3><div class="books-grid" id="teensRomance"></div></div>
+        <div class="subsection"><h3 class="subsection-title">Fantasy</h3><div class="books-grid" id="teensFantasy"></div></div>
+        <div class="subsection"><h3 class="subsection-title">High School Drama</h3><div class="books-grid" id="teensSchool"></div></div>
+        <div class="subsection"><h3 class="subsection-title">Dark Romance</h3><div class="books-grid" id="teensDarkRomance"></div></div>
+        <div class="subsection"><h3 class="subsection-title">Adventure</h3><div class="books-grid" id="teensAdventure"></div></div>
+        <div class="subsection"><h3 class="subsection-title">Mystery / Thriller</h3><div class="books-grid" id="teensMystery"></div></div>
+      </div>
+
+      <!-- ADULTS SECTION -->
+      <div class="section">
+        <h2 class="section-title">Adults (18+ Years)</h2>
+        <span class="section-subtitle">Sophisticated and mature stories</span>
+        <div class="subsection"><h3 class="subsection-title">Psychological Thriller</h3><div class="books-grid" id="adultsThrill"></div></div>
+        <div class="subsection"><h3 class="subsection-title">Crime / Mystery</h3><div class="books-grid" id="adultsCrime"></div></div>
+        <div class="subsection"><h3 class="subsection-title">Romance</h3><div class="books-grid" id="adultsRomance"></div></div>
+        <div class="subsection"><h3 class="subsection-title">Sci-Fi</h3><div class="books-grid" id="adultsScienceFiction"></div></div>
+        <div class="subsection"><h3 class="subsection-title">Horror</h3><div class="books-grid" id="adultsHorror"></div></div>
+        <div class="subsection"><h3 class="subsection-title">Literary / Deep Stories</h3><div class="books-grid" id="adultsLiterary"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- READER MODAL -->
+  <div id="readerModal" class="reader-modal">
+    <div class="reader-header">
+      <h1 class="reader-title" id="readerTitle">Book Title</h1>
+      <button class="close-btn" onclick="closeReader()">&times;</button>
+    </div>
+    <div class="reader-container">
+      <div class="page-wrapper">
+        <div id="pagesContainer"></div>
+      </div>
+    </div>
+    <div class="reader-footer">
+      <button class="control-btn" id="prevBtn" onclick="previousPage()">← Previous</button>
+      <div class="page-counter">
+        <span id="currentPageNum">1</span> / <span id="totalPageNum">1</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <button class="control-btn" id="nextBtn" onclick="nextPage()">Next →</button>
+    </div>
+  </div>
+
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+  <script>
+    // ── AUTH CHECK ─────────────────────────────────────────────────
+    if (localStorage.getItem('isLoggedIn') !== 'true') {
+      window.location.href = './login.html';
+    }
+
+    const userEmail = localStorage.getItem('userEmail') || 'User';
+    const userName  = localStorage.getItem('userName')  || 'Guest';
+    document.getElementById('userEmail').textContent = `Welcome, ${userName}!`;
+
+    // ── DEFAULT PAGES (fallback before stories.js overrides) ───────
+    var defaultStoryPages = [
+      `<h2>Chapter 1</h2><p>This story is coming soon. Check back later for the full content!</p>`,
+      `<h2>Chapter 2</h2><p>More chapters will be added soon. Thank you for your patience!</p>`
+    ];
+
+    // ── BOOK DATABASE (var so stories.js can access it globally) ───
+    var bookDatabase = {
+
+      // ── KIDS – Adventure / Fun ────────────────────────
+      'the-lost-treasure': {
+        title: 'The Lost Treasure of the Jungle',
+        image: './assets/images/kids story/The Lost Treasure of Jungle Island.jpg',
+        pages: defaultStoryPages
+      },
+      'timmy-secret-cave': {
+        title: 'Timmy and the Secret Cave',
+        image: './assets/images/kids story/Timmy and the Secret Cave.jpg',
+        pages: defaultStoryPages
+      },
+      'magic-balloon-ride': {
+        title: 'The Magic Balloon Ride',
+        image: './assets/images/kids story/The Magic Balloon Ride.jpg',
+        pages: defaultStoryPages
+      },
+      'hidden-treehouse': {
+        title: 'The Hidden Treehouse',
+        image: './assets/images/kids story/The Hidden Treehouse.jpg',
+        pages: defaultStoryPages
+      },
+      'pirate-golden-compass': {
+        title: "The Pirate's Golden Compass",
+        image: "./assets/images/kids story/The Pirates Golden Compass.jpg",
+        pages: defaultStoryPages
+      },
+
+      // ── KIDS – Fairy / Fantasy ────────────────────────
+      'princess-moonlight': {
+        title: 'The Princess of Moonlight Valley',
+        image: './assets/images/kids story/The Princess of Moonlight Valley.jpg',
+        pages: defaultStoryPages
+      },
+      'enchanted-forest': {
+        title: 'The Enchanted Forest Secret',
+        image: './assets/images/kids story/The Enchanted Forest Secret.png',
+        pages: defaultStoryPages
+      },
+      'talking-unicorn': {
+        title: 'The Talking Unicorn',
+        image: './assets/images/kids story/The Talking Unicorn.png',
+        pages: defaultStoryPages
+      },
+      'crystal-fairy-kingdom': {
+        title: 'The Crystal Fairy Kingdom',
+        image: './assets/images/kids story/The Crystal Fairy Kingdom.jpg',
+        pages: defaultStoryPages
+      },
+      'dragon-couldnt-fly': {
+        title: "The Dragon Who Couldn't Fly",
+        image: "./assets/images/kids story/The Dragon Who Couldnt Fly.jfif",
+        pages: defaultStoryPages
+      },
+
+      // ── KIDS – Bedtime ────────────────────────────────
+      'sleepy-star': {
+        title: 'The Sleepy Star',
+        image: './assets/images/kids story/The Sleepy Star.jpg',
+        pages: defaultStoryPages
+      },
+      'night-moon-smiled': {
+        title: 'The Night the Moon Smiled',
+        image: './assets/images/kids story/The Night the Moon Smiled.jpg',
+        pages: defaultStoryPages
+      },
+      'dreamland-express': {
+        title: 'Dreamland Express',
+        image: './assets/images/kids story/Dreamland Express.jpg',
+        pages: defaultStoryPages
+      },
+      'cloud-that-sang': {
+        title: 'The Cloud That Sang',
+        image: './assets/images/kids story/The Cloud That Sang.jpg',
+        pages: defaultStoryPages
+      },
+      'little-boy-night-sky': {
+        title: 'The Little Boy and the Night Sky',
+        image: './assets/images/kids story/The Little Boy and the Night Sky.jfif',
+        pages: defaultStoryPages
+      },
+
+      // ── KIDS – Animal Stories ─────────────────────────
+      'benny-brave-bunny': {
+        title: 'Benny the Brave Bunny',
+        image: './assets/images/kids story/Benny the Brave Bunny.jfif',
+        pages: defaultStoryPages
+      },
+      'clever-little-fox': {
+        title: 'The Clever Little Fox',
+        image: './assets/images/kids story/The Clever Little Fox.jfif',
+        pages: defaultStoryPages
+      },
+      'leo-lazy-lion': {
+        title: 'Leo the Lazy Lion',
+        image: './assets/images/kids story/Leo the Lazy Lion.jfif',
+        pages: defaultStoryPages
+      },
+      'penguin-wanted-fly': {
+        title: 'The Penguin Who Wanted to Fly',
+        image: './assets/images/kids story/The Penguin Who Wanted to Fly.jfif',
+        pages: defaultStoryPages
+      },
+      'elephant-who-forgot': {
+        title: 'The Elephant Who Forgot',
+        image: './assets/images/kids story/The Elephant Who Forgot.jfif',
+        pages: defaultStoryPages
+      },
+
+      // ── KIDS – Moral Stories ──────────────────────────
+      'boy-shared-everything': {
+        title: 'The Boy Who Shared Everything',
+        image: './assets/images/kids story/The Boy Who Shared Everything.jfif',
+        pages: defaultStoryPages
+      },
+      'honest-woodcutter': {
+        title: 'The Honest Woodcutter',
+        image: './assets/images/kids story/The Honest Woodcutter.jfif',
+        pages: defaultStoryPages
+      },
+      'greedy-farmer': {
+        title: 'The Greedy Farmer',
+        image: './assets/images/kids story/The Greedy Farmer.jfif',
+        pages: defaultStoryPages
+      },
+      'kindness-comes-back': {
+        title: 'Kindness Comes Back',
+        image: './assets/images/kids story/Kindness Comes Back.jfif',
+        pages: defaultStoryPages
+      },
+      'power-of-truth': {
+        title: 'The Power of Truth',
+        image: './assets/images/kids story/The Power of Truth.jfif',
+        pages: defaultStoryPages
+      },
+
+      // ── KIDS – Mystery ────────────────────────────────
+      'missing-toy-mystery': {
+        title: 'The Missing Toy Mystery',
+        image: './assets/images/kids story/The Missing Toy Mystery.jfif',
+        pages: defaultStoryPages
+      },
+      'broken-window-case': {
+        title: 'The Case of the Broken Window',
+        image: './assets/images/kids story/The Case of the Broken Window.jfif',
+        pages: defaultStoryPages
+      },
+      'secret-old-school': {
+        title: 'The Secret Behind the Old School',
+        image: './assets/images/kids story/The Secret Behind the Old School.jfif',
+        pages: defaultStoryPages
+      },
+      'hidden-map-puzzle': {
+        title: 'The Hidden Map Puzzle',
+        image: './assets/images/kids story/The Hidden Map Puzzle.jfif',
+        pages: defaultStoryPages
+      },
+      'library-ghost-mystery': {
+        title: 'The Library Ghost Mystery',
+        image: './assets/images/kids story/The Library Ghost Mystery.jfif',
+        pages: defaultStoryPages
+      },
+
+      // ── TEENS – Romance / Drama ───────────────────────
+      'love-last-semester': {
+        title: 'Love in the Last Semester',
+        image: './assets/images/teenagers story/Love in the Last Semester.jfif',
+        pages: defaultStoryPages
+      },
+      'girl-next-door': {
+        title: 'The Girl Next Door',
+        image: './assets/images/teenagers story/The Girl Next Door.jfif',
+        pages: defaultStoryPages
+      },
+      'between-love-lies': {
+        title: 'Between Love and Lies',
+        image: './assets/images/teenagers story/Between Love and Lies.jfif',
+        pages: defaultStoryPages
+      },
+      'summer-we-changed': {
+        title: 'The Summer We Changed',
+        image: './assets/images/teenagers story/The Summer We Changed.jpg',
+        pages: defaultStoryPages
+      },
+      'were-my-almost': {
+        title: 'You Were My Almost',
+        image: './assets/images/teenagers story/You Were My Almost.jpg',
+        pages: defaultStoryPages
+      },
+
+      // ── TEENS – Fantasy ───────────────────────────────
+      'kingdom-shadows': {
+        title: 'The Kingdom of Shadows',
+        image: './assets/images/teenagers story/The Kingdom of Shadows.jfif',
+        pages: defaultStoryPages
+      },
+      'last-magic-keeper': {
+        title: 'The Last Magic Keeper',
+        image: './assets/images/teenagers story/The Last Magic Keeper.jfif',
+        pages: defaultStoryPages
+      },
+      'girl-controlled-fire': {
+        title: 'The Girl Who Controlled Fire',
+        image: './assets/images/teenagers story/The Girl Who Controlled Fire.jfif',
+        pages: defaultStoryPages
+      },
+      'war-hidden-realms': {
+        title: 'War of the Hidden Realms',
+        image: './assets/images/teenagers story/War of the Hidden Realms.jfif',
+        pages: defaultStoryPages
+      },
+      'crown-darkness': {
+        title: 'The Crown of Darkness',
+        image: './assets/images/teenagers story/The Crown of Darkness.png',
+        pages: defaultStoryPages
+      },
+
+      // ── TEENS – High School Drama ─────────────────────
+      'popular-but-lonely': {
+        title: 'Popular But Lonely',
+        image: './assets/images/teenagers story/Popular But Lonely.jfif',
+        pages: defaultStoryPages
+      },
+      'secrets-hallway': {
+        title: 'Secrets in the Hallway',
+        image: './assets/images/teenagers story/Secrets in the Hallway.png',
+        pages: defaultStoryPages
+      },
+      'final-year-chaos': {
+        title: 'The Final Year Chaos',
+        image: './assets/images/teenagers story/The Final Year Chaos.png',
+        pages: defaultStoryPages
+      },
+      'friends-fights-forever': {
+        title: 'Friends, Fights & Forever',
+        image: './assets/images/teenagers story/Friends, Fights and Forever.jfif',
+        pages: defaultStoryPages
+      },
+      'truth-behind-smile': {
+        title: 'The Truth Behind the Smile',
+        image: './assets/images/teenagers story/The Truth Behind the Smile.png',
+        pages: defaultStoryPages
+      },
+
+      // ── TEENS – Dark Romance ──────────────────────────
+      'bound-by-secrets': {
+        title: 'Bound by Secrets',
+        image: './assets/images/teenagers story/Bound by Secrets.png',
+        pages: defaultStoryPages
+      },
+      'dangerous-attraction': {
+        title: 'Dangerous Attraction',
+        image: './assets/images/teenagers story/Dangerous Attraction.jpg',
+        pages: defaultStoryPages
+      },
+      'love-dark': {
+        title: 'Love in the Dark',
+        image: './assets/images/teenagers story/Love in the Dark.jpg',
+        pages: defaultStoryPages
+      },
+      'his-twisted-world': {
+        title: 'His Twisted World',
+        image: './assets/images/teenagers story/His Twisted World.png',
+        pages: defaultStoryPages
+      },
+      'falling-villain': {
+        title: 'Falling for the Villain',
+        image: './assets/images/teenagers story/Falling for the Villain.jpg',
+        pages: defaultStoryPages
+      },
+
+      // ── TEENS – Adventure ─────────────────────────────
+      'island-no-return': {
+        title: 'The Island of No Return',
+        image: './assets/images/teenagers story/The Island of No Return.jfif',
+        pages: defaultStoryPages
+      },
+      'midnight-expedition': {
+        title: 'The Midnight Expedition',
+        image: './assets/images/teenagers story/The Midnight Expedition.png',
+        pages: defaultStoryPages
+      },
+      'lost-forbidden-zone': {
+        title: 'Lost in the Forbidden Zone',
+        image: './assets/images/teenagers story/Lost in the Forbidden Zone.jpg',
+        pages: defaultStoryPages
+      },
+      'secret-mission': {
+        title: 'The Secret Mission',
+        image: './assets/images/teenagers story/The Secret Mission.png',
+        pages: defaultStoryPages
+      },
+      'beyond-unknown': {
+        title: 'Beyond the Unknown',
+        image: './assets/images/teenagers story/Beyond the Unknown.png',
+        pages: defaultStoryPages
+      },
+
+      // ── TEENS – Mystery / Thriller ────────────────────
+      'locker-secret': {
+        title: 'The Locker Secret',
+        image: './assets/images/teenagers story/The Locker Secret.png',
+        pages: defaultStoryPages
+      },
+      'sent-message': {
+        title: 'Who Sent the Message?',
+        image: './assets/images/teenagers story/Who Sent the Message.png',
+        pages: defaultStoryPages
+      },
+      'disappearing-student': {
+        title: 'The Disappearing Student',
+        image: './assets/images/teenagers story/The Disappearing Student.png',
+        pages: defaultStoryPages
+      },
+      'night-nobody-returned': {
+        title: 'The Night Nobody Returned',
+        image: './assets/images/teenagers story/The Night Nobody Returned.png',
+        pages: defaultStoryPages
+      },
+      'truth-behind-mask': {
+        title: 'Truth Behind the Mask',
+        image: './assets/images/teenagers story/Truth Behind the Mask.png',
+        pages: defaultStoryPages
+      },
+
+      // ── ADULTS – Psychological Thriller ──────────────
+      'mind-game': {
+        title: 'The Mind Game',
+        image: './assets/images/adults story/The Mind Game.png',
+        pages: defaultStoryPages
+      },
+      'voices-inside': {
+        title: 'Voices Inside',
+        image: './assets/images/adults story/Voices Inside.jpg',
+        pages: defaultStoryPages
+      },
+      'perfect-lie': {
+        title: 'The Perfect Lie',
+        image: './assets/images/adults story/The Perfect Lie.jpg',
+        pages: defaultStoryPages
+      },
+      'man-who-watched': {
+        title: 'The Man Who Watched',
+        image: './assets/images/adults story/The Man Who Watched.jpg',
+        pages: defaultStoryPages
+      },
+      'behind-closed-eyes': {
+        title: 'Behind Closed Eyes',
+        image: './assets/images/adults story/Behind Closed Eyes.jpg',
+        pages: defaultStoryPages
+      },
+
+      // ── ADULTS – Crime / Mystery ──────────────────────
+      'silent-witness': {
+        title: 'The Silent Witness',
+        image: './assets/images/adults story/The Silent Witness.jpg',
+        pages: defaultStoryPages
+      },
+      'murder-at-midnight': {
+        title: 'Murder at Midnight',
+        image: './assets/images/adults story/Murder at Midnight.jfif',
+        pages: defaultStoryPages
+      },
+      'vanishing-case': {
+        title: 'The Vanishing Case',
+        image: './assets/images/adults story/The Vanishing Case.jpg',
+        pages: defaultStoryPages
+      },
+      'detective-secret': {
+        title: "The Detective's Secret",
+        image: "./assets/images/adults story/The Detective’s Secret.jpg",
+        pages: defaultStoryPages
+      },
+      'final-clue': {
+        title: 'The Final Clue',
+        image: './assets/images/adults story/The Final Clue.jpg',
+        pages: defaultStoryPages
+      },
+
+      // ── ADULTS – Romance ──────────────────────────────
+      'love-after-goodbye': {
+        title: 'Love After Goodbye',
+        image: './assets/images/adults story/Love After Goodbye.jpg',
+        pages: defaultStoryPages
+      },
+      'broken-but-beautiful': {
+        title: 'Broken But Beautiful',
+        image: './assets/images/adults story/Broken But Beautiful.jpg',
+        pages: defaultStoryPages
+      },
+      'when-we-met-again': {
+        title: 'When We Met Again',
+        image: './assets/images/adults story/When We Met Again.jpg',
+        pages: defaultStoryPages
+      },
+      'one-that-stayed': {
+        title: 'The One That Stayed',
+        image: './assets/images/adults story/The One That Stayed.jpg',
+        pages: defaultStoryPages
+      },
+      'love-worth-waiting': {
+        title: 'A Love Worth Waiting',
+        image: './assets/images/adults story/A Love Worth Waiting.jpg',
+        pages: defaultStoryPages
+      },
+
+      // ── ADULTS – Sci-Fi ───────────────────────────────
+      'last-human-colony': {
+        title: 'The Last Human Colony',
+        image: './assets/images/adults story/The Last Human Colony.jpg',
+        pages: defaultStoryPages
+      },
+      'beyond-earth': {
+        title: 'Beyond Earth',
+        image: './assets/images/adults story/Beyond Earth.jpg',
+        pages: defaultStoryPages
+      },
+      'time-traveler-secret': {
+        title: "The Time Traveler's Secret",
+        image: "./assets/images/adults story/The Time Traveler’s Secret.jpg",
+        pages: defaultStoryPages
+      },
+      'ai-awakening': {
+        title: 'AI: The Awakening',
+        image: './assets/images/adults story/AI_ The Awakening.jpg',
+        pages: defaultStoryPages
+      },
+      'planet-unknown': {
+        title: 'The Planet Unknown',
+        image: './assets/images/adults story/The Planet Unknown.jpg',
+        pages: defaultStoryPages
+      },
+
+      // ── ADULTS – Horror ───────────────────────────────
+      'house-that-watches': {
+        title: 'The House That Watches',
+        image: './assets/images/adults story/The House That Watches.jpg',
+        pages: defaultStoryPages
+      },
+      'dont-open-door': {
+        title: "Don't Open the Door",
+        image: "./assets/images/adults story/Don’t Open the Door.jpg",
+        pages: defaultStoryPages
+      },
+      'whispering-shadows': {
+        title: 'The Whispering Shadows',
+        image: './assets/images/adults story/The Whispering Shadows.jpg',
+        pages: defaultStoryPages
+      },
+      'midnight-screams': {
+        title: 'Midnight Screams',
+        image: './assets/images/adults story/Midnight Screams.jpg',
+        pages: defaultStoryPages
+      },
+      'thing-in-mirror': {
+        title: 'The Thing in the Mirror',
+        image: './assets/images/adults story/The Thing in the Mirror.jpg',
+        pages: defaultStoryPages
+      },
+
+      // ── ADULTS – Literary / Deep Stories ─────────────
+      'weight-of-choices': {
+        title: 'The Weight of Choices',
+        image: './assets/images/adults story/The Weight of Choices.jpg',
+        pages: defaultStoryPages
+      },
+      'life-unwritten': {
+        title: 'A Life Unwritten',
+        image: './assets/images/adults story/A Life Unwritten.jpg',
+        pages: defaultStoryPages
+      },
+      'silent-years': {
+        title: 'The Silent Years',
+        image: './assets/images/adults story/The Silent Years.jpg',
+        pages: defaultStoryPages
+      },
+      'echoes-of-past': {
+        title: 'Echoes of the Past',
+        image: './assets/images/adults story/Echoes of the Past.jpg',
+        pages: defaultStoryPages
+      },
+      'road-we-took': {
+        title: 'The Road We Took',
+        image: './assets/images/adults story/The Road We Took.jpg',
+        pages: defaultStoryPages
+      }
+    };
+
+    // ── BOOK LISTING DATA ──────────────────────────────────────────
+    const books = {
+      kidsAdventure: [
+        { id: 'the-lost-treasure',    title: 'The Lost Treasure of Jungle Island', genre: 'Adventure' },
+        { id: 'timmy-secret-cave',    title: 'Timmy and the Secret Cave',          genre: 'Adventure' },
+        { id: 'magic-balloon-ride',   title: 'The Magic Balloon Ride',             genre: 'Adventure' },
+        { id: 'hidden-treehouse',     title: 'The Hidden Treehouse',               genre: 'Adventure' },
+        { id: 'pirate-golden-compass',title: "The Pirate's Golden Compass",        genre: 'Adventure' }
+      ],
+      kidsFairy: [
+        { id: 'princess-moonlight',   title: 'The Princess of Moonlight Valley',  genre: 'Fantasy' },
+        { id: 'enchanted-forest',     title: 'The Enchanted Forest Secret',        genre: 'Fantasy' },
+        { id: 'talking-unicorn',      title: 'The Talking Unicorn',                genre: 'Fantasy' },
+        { id: 'crystal-fairy-kingdom',title: 'The Crystal Fairy Kingdom',          genre: 'Fantasy' },
+        { id: 'dragon-couldnt-fly',   title: "The Dragon Who Couldn't Fly",        genre: 'Fantasy' }
+      ],
+      kidsBedtime: [
+        { id: 'sleepy-star',          title: 'The Sleepy Star',                    genre: 'Bedtime' },
+        { id: 'night-moon-smiled',    title: 'The Night the Moon Smiled',          genre: 'Bedtime' },
+        { id: 'dreamland-express',    title: 'Dreamland Express',                  genre: 'Bedtime' },
+        { id: 'cloud-that-sang',      title: 'The Cloud That Sang',               genre: 'Bedtime' },
+        { id: 'little-boy-night-sky', title: 'The Little Boy and the Night Sky',  genre: 'Bedtime' }
+      ],
+      kidsAnimal: [
+        { id: 'benny-brave-bunny',    title: 'Benny the Brave Bunny',             genre: 'Animals' },
+        { id: 'clever-little-fox',    title: 'The Clever Little Fox',             genre: 'Animals' },
+        { id: 'leo-lazy-lion',        title: 'Leo the Lazy Lion',                 genre: 'Animals' },
+        { id: 'penguin-wanted-fly',   title: 'The Penguin Who Wanted to Fly',     genre: 'Animals' },
+        { id: 'elephant-who-forgot',  title: 'The Elephant Who Forgot',           genre: 'Animals' }
+      ],
+      kidsMoral: [
+        { id: 'boy-shared-everything',title: 'The Boy Who Shared Everything',     genre: 'Moral' },
+        { id: 'honest-woodcutter',    title: 'The Honest Woodcutter',             genre: 'Moral' },
+        { id: 'greedy-farmer',        title: 'The Greedy Farmer',                 genre: 'Moral' },
+        { id: 'kindness-comes-back',  title: 'Kindness Comes Back',               genre: 'Moral' },
+        { id: 'power-of-truth',       title: 'The Power of Truth',                genre: 'Moral' }
+      ],
+      kidsMystery: [
+        { id: 'missing-toy-mystery',  title: 'The Missing Toy Mystery',           genre: 'Mystery' },
+        { id: 'broken-window-case',   title: 'The Case of the Broken Window',     genre: 'Mystery' },
+        { id: 'secret-old-school',    title: 'The Secret Behind the Old School',  genre: 'Mystery' },
+        { id: 'hidden-map-puzzle',    title: 'The Hidden Map Puzzle',             genre: 'Mystery' },
+        { id: 'library-ghost-mystery',title: 'The Library Ghost Mystery',         genre: 'Mystery' }
+      ],
+      teensRomance: [
+        { id: 'love-last-semester',   title: 'Love in the Last Semester',         genre: 'Romance' },
+        { id: 'girl-next-door',       title: 'The Girl Next Door',                genre: 'Romance' },
+        { id: 'between-love-lies',    title: 'Between Love and Lies',             genre: 'Romance' },
+        { id: 'summer-we-changed',    title: 'The Summer We Changed',             genre: 'Romance' },
+        { id: 'were-my-almost',       title: 'You Were My Almost',                genre: 'Romance' }
+      ],
+      teensFantasy: [
+        { id: 'kingdom-shadows',      title: 'The Kingdom of Shadows',            genre: 'Fantasy' },
+        { id: 'last-magic-keeper',    title: 'The Last Magic Keeper',             genre: 'Fantasy' },
+        { id: 'girl-controlled-fire', title: 'The Girl Who Controlled Fire',      genre: 'Fantasy' },
+        { id: 'war-hidden-realms',    title: 'War of the Hidden Realms',          genre: 'Fantasy' },
+        { id: 'crown-darkness',       title: 'The Crown of Darkness',             genre: 'Fantasy' }
+      ],
+      teensSchool: [
+        { id: 'popular-but-lonely',   title: 'Popular But Lonely',                genre: 'Drama' },
+        { id: 'secrets-hallway',      title: 'Secrets in the Hallway',            genre: 'Drama' },
+        { id: 'final-year-chaos',     title: 'The Final Year Chaos',              genre: 'Drama' },
+        { id: 'friends-fights-forever',title:'Friends, Fights & Forever',         genre: 'Drama' },
+        { id: 'truth-behind-smile',   title: 'The Truth Behind the Smile',        genre: 'Drama' }
+      ],
+      teensDarkRomance: [
+        { id: 'bound-by-secrets',     title: 'Bound by Secrets',                  genre: 'Dark Romance' },
+        { id: 'dangerous-attraction', title: 'Dangerous Attraction',              genre: 'Dark Romance' },
+        { id: 'love-dark',            title: 'Love in the Dark',                  genre: 'Dark Romance' },
+        { id: 'his-twisted-world',    title: 'His Twisted World',                 genre: 'Dark Romance' },
+        { id: 'falling-villain',      title: 'Falling for the Villain',           genre: 'Dark Romance' }
+      ],
+      teensAdventure: [
+        { id: 'island-no-return',     title: 'The Island of No Return',           genre: 'Adventure' },
+        { id: 'midnight-expedition',  title: 'The Midnight Expedition',            genre: 'Adventure' },
+        { id: 'lost-forbidden-zone',  title: 'Lost in the Forbidden Zone',        genre: 'Adventure' },
+        { id: 'secret-mission',       title: 'The Secret Mission',                genre: 'Adventure' },
+        { id: 'beyond-unknown',       title: 'Beyond the Unknown',                genre: 'Adventure' }
+      ],
+      teensMystery: [
+        { id: 'locker-secret',        title: 'The Locker Secret',                 genre: 'Mystery' },
+        { id: 'sent-message',         title: 'Who Sent the Message?',             genre: 'Mystery' },
+        { id: 'disappearing-student', title: 'The Disappearing Student',          genre: 'Mystery' },
+        { id: 'night-nobody-returned',title: 'The Night Nobody Returned',         genre: 'Mystery' },
+        { id: 'truth-behind-mask',    title: 'Truth Behind the Mask',             genre: 'Mystery' }
+      ],
+      adultsThrill: [
+        { id: 'mind-game',            title: 'The Mind Game',                     genre: 'Thriller' },
+        { id: 'voices-inside',        title: 'Voices Inside',                     genre: 'Thriller' },
+        { id: 'perfect-lie',          title: 'The Perfect Lie',                   genre: 'Thriller' },
+        { id: 'man-who-watched',      title: 'The Man Who Watched',               genre: 'Thriller' },
+        { id: 'behind-closed-eyes',   title: 'Behind Closed Eyes',                genre: 'Thriller' }
+      ],
+      adultsCrime: [
+        { id: 'silent-witness',       title: 'The Silent Witness',                genre: 'Crime' },
+        { id: 'murder-at-midnight',   title: 'Murder at Midnight',                genre: 'Crime' },
+        { id: 'vanishing-case',       title: 'The Vanishing Case',                genre: 'Crime' },
+        { id: 'detective-secret',     title: "The Detective's Secret",            genre: 'Crime' },
+        { id: 'final-clue',           title: 'The Final Clue',                    genre: 'Crime' }
+      ],
+      adultsRomance: [
+        { id: 'love-after-goodbye',   title: 'Love After Goodbye',                genre: 'Romance' },
+        { id: 'broken-but-beautiful', title: 'Broken But Beautiful',              genre: 'Romance' },
+        { id: 'when-we-met-again',    title: 'When We Met Again',                 genre: 'Romance' },
+        { id: 'one-that-stayed',      title: 'The One That Stayed',               genre: 'Romance' },
+        { id: 'love-worth-waiting',   title: 'A Love Worth Waiting',              genre: 'Romance' }
+      ],
+      adultsScienceFiction: [
+        { id: 'last-human-colony',    title: 'The Last Human Colony',             genre: 'Sci-Fi' },
+        { id: 'beyond-earth',         title: 'Beyond Earth',                      genre: 'Sci-Fi' },
+        { id: 'time-traveler-secret', title: "The Time Traveler's Secret",        genre: 'Sci-Fi' },
+        { id: 'ai-awakening',         title: 'AI: The Awakening',                 genre: 'Sci-Fi' },
+        { id: 'planet-unknown',       title: 'The Planet Unknown',                genre: 'Sci-Fi' }
+      ],
+      adultsHorror: [
+        { id: 'house-that-watches',   title: 'The House That Watches',            genre: 'Horror' },
+        { id: 'dont-open-door',       title: "Don't Open the Door",               genre: 'Horror' },
+        { id: 'whispering-shadows',   title: 'The Whispering Shadows',            genre: 'Horror' },
+        { id: 'midnight-screams',     title: 'Midnight Screams',                  genre: 'Horror' },
+        { id: 'thing-in-mirror',      title: 'The Thing in the Mirror',           genre: 'Horror' }
+      ],
+      adultsLiterary: [
+        { id: 'weight-of-choices',    title: 'The Weight of Choices',             genre: 'Literary' },
+        { id: 'life-unwritten',       title: 'A Life Unwritten',                  genre: 'Literary' },
+        { id: 'silent-years',         title: 'The Silent Years',                  genre: 'Literary' },
+        { id: 'echoes-of-past',       title: 'Echoes of the Past',                genre: 'Literary' },
+        { id: 'road-we-took',         title: 'The Road We Took',                  genre: 'Literary' }
+      ]
+    };
+
+    // ── RENDER BOOK CARDS ──────────────────────────────────────────
+    function renderBooks(category, containerId) {
+      const container = document.getElementById(containerId);
+      if (!container || !books[category]) return;
+
+      container.innerHTML = books[category].map(book => {
+        const dbEntry = bookDatabase[book.id];
+        const imgPath = dbEntry && dbEntry.image ? dbEntry.image : '';
+
+        const imgHTML = imgPath
+          ? `<img src="${imgPath}" alt="${book.title}"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+             <div class="cover-fallback" style="display:none;">${book.title}</div>`
+          : `<div class="cover-fallback">${book.title}</div>`;
+
+        return `
+          <div class="book-card">
+            <div class="book-cover">${imgHTML}</div>
+            <div class="book-info">
+              <div class="book-title">${book.title}</div>
+              <div class="book-genre">${book.genre}</div>
+              <button class="read-btn" onclick="openReader('${book.id}')">Read Now</button>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    // ── READER STATE ───────────────────────────────────────────────
+    let currentBook = null;
+    let currentPageIndex = 0;
+
+    function openReader(bookId) {
+      currentBook = bookDatabase[bookId];
+      if (!currentBook) return;
+
+      if (currentBook.externalLink) {
+        window.open(currentBook.externalLink, '_blank');
+        return;
+      }
+
+      currentPageIndex = 0;
+      document.getElementById('readerTitle').textContent    = currentBook.title;
+      document.getElementById('totalPageNum').textContent   = currentBook.pages.length;
+      renderPages();
+      updatePageDisplay();
+      document.getElementById('readerModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeReader() {
+      document.getElementById('readerModal').classList.remove('active');
+      document.body.style.overflow = 'auto';
+      currentBook = null;
+      currentPageIndex = 0;
+    }
+
+    function renderPages() {
+      const container = document.getElementById('pagesContainer');
+      container.innerHTML = '';
+      currentBook.pages.forEach((pageContent, index) => {
+        const pageDiv = document.createElement('div');
+        pageDiv.className = 'page';
+        if (index === currentPageIndex) pageDiv.classList.add('active');
+        pageDiv.innerHTML = pageContent;
+        container.appendChild(pageDiv);
+      });
+    }
+
+    function updatePageDisplay() {
+      document.querySelectorAll('.page').forEach((page, index) => {
+        page.classList.remove('active', 'exit-left', 'exit-right');
+        if (index === currentPageIndex) page.classList.add('active');
+      });
+      document.getElementById('currentPageNum').textContent = currentPageIndex + 1;
+      updateProgressBar();
+      updateButtons();
+    }
+
+    function updateProgressBar() {
+      const progress = ((currentPageIndex + 1) / currentBook.pages.length) * 100;
+      document.getElementById('progressFill').style.width = progress + '%';
+    }
+
+    function updateButtons() {
+      document.getElementById('prevBtn').disabled = currentPageIndex === 0;
+      document.getElementById('nextBtn').disabled = currentPageIndex === currentBook.pages.length - 1;
+    }
+
+    function nextPage() {
+      if (currentPageIndex < currentBook.pages.length - 1) {
+        document.querySelectorAll('.page')[currentPageIndex].classList.add('exit-left');
+        currentPageIndex++;
+        updatePageDisplay();
+      }
+    }
+
+    function previousPage() {
+      if (currentPageIndex > 0) {
+        document.querySelectorAll('.page')[currentPageIndex].classList.add('exit-right');
+        currentPageIndex--;
+        updatePageDisplay();
+      }
+    }
+
+    function handleLogout() {
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('userEmail');
+      localStorage.removeItem('userName');
+      window.location.href = './login.html';
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (document.getElementById('readerModal').classList.contains('active')) {
+        if (e.key === 'ArrowRight') nextPage();
+        if (e.key === 'ArrowLeft')  previousPage();
+        if (e.key === 'Escape')     closeReader();
+      }
+    });
+
+    // ── RENDER ALL SECTIONS ────────────────────────────────────────
+    renderBooks('kidsAdventure',      'kidsAdventure');
+    renderBooks('kidsFairy',          'kidsFairy');
+    renderBooks('kidsBedtime',        'kidsBedtime');
+    renderBooks('kidsAnimal',         'kidsAnimal');
+    renderBooks('kidsMoral',          'kidsMoral');
+    renderBooks('kidsMystery',        'kidsMystery');
+
+    renderBooks('teensRomance',       'teensRomance');
+    renderBooks('teensFantasy',       'teensFantasy');
+    renderBooks('teensSchool',        'teensSchool');
+    renderBooks('teensDarkRomance',   'teensDarkRomance');
+    renderBooks('teensAdventure',     'teensAdventure');
+    renderBooks('teensMystery',       'teensMystery');
+
+    renderBooks('adultsThrill',       'adultsThrill');
+    renderBooks('adultsCrime',        'adultsCrime');
+    renderBooks('adultsRomance',      'adultsRomance');
+    renderBooks('adultsScienceFiction','adultsScienceFiction');
+    renderBooks('adultsHorror',       'adultsHorror');
+    renderBooks('adultsLiterary',     'adultsLiterary');
+  </script>
+
+  <!-- stories.js MUST load AFTER the inline script so bookDatabase exists -->
+  <script src="./stories.js"></script>
+
+</body>
+</html>

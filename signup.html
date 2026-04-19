@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up — MYTHOS</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Work+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-color: #f8f9fa;
+      --card-bg: rgba(255, 255, 255, 0.96);
+      --primary-accent: hsl(202, 72%, 40%);
+    }
+
+    body {
+      background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'); 
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Work Sans', sans-serif;
+    }
+
+    .signup-container {
+      background: var(--card-bg);
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+      backdrop-filter: blur(5px);
+      margin: 20px;
+    }
+
+    .logo { display: inline-block; margin-bottom: 20px; }
+
+    .signup-title {
+      font-family: 'Jost', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .signup-text { color: #666; font-size: 1.4rem; margin-bottom: 30px; }
+
+    .form-group { margin-bottom: 20px; text-align: left; }
+
+    .form-label {
+      display: block;
+      font-size: 1.4rem;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: #444;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      outline: none;
+      box-sizing: border-box;
+      transition: border-color 0.2s;
+      font-size: 1.4rem;
+      color: #333;
+    }
+
+    .form-input:focus { border-color: var(--primary-accent); }
+
+    .btn-signup {
+      width: 100%;
+      margin-top: 10px;
+      padding: 15px;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 1px;
+      cursor: pointer;
+      background-color: var(--primary-accent);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 1.4rem;
+      transition: opacity 0.2s;
+    }
+
+    .btn-signup:hover    { opacity: 0.9; }
+    .btn-signup:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .error-message {
+      color: #d32f2f;
+      background-color: #ffebee;
+      padding: 12px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      font-size: 1.2rem;
+      display: none;
+      border-left: 4px solid #d32f2f;
+    }
+
+    .success-message {
+      color: #388e3c;
+      background-color: #e8f5e9;
+      padding: 12px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      font-size: 1.2rem;
+      display: none;
+      border-left: 4px solid #388e3c;
+    }
+
+    .signup-footer { margin-top: 25px; font-size: 1.4rem; color: #666; }
+
+    .signup-footer a {
+      color: var(--primary-accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .back-home {
+      display: block;
+      margin-top: 15px;
+      font-size: 1.2rem;
+      color: #888;
+      text-decoration: none;
+    }
+
+    .back-home:hover { color: var(--primary-accent); }
+  </style>
+</head>
+
+<body>
+
+  <div class="signup-container">
+    <a href="index.html" class="logo" style="display: flex; align-items: center; justify-content: center;">
+      <img src="./assets/images/Mythos.png" width="138" height="28" alt="MYTHOS">
+      <span style="font-size: 24px; font-weight: bold; margin-left: 10px;">MYTHOS</span>
+    </a>
+
+    <h1 class="signup-title">Create Account</h1>
+    <p class="signup-text">Join the MYTHOS community today</p>
+
+    <div class="error-message"   id="errorMessage"></div>
+    <div class="success-message" id="successMessage"></div>
+
+    <!-- NOTE: action="#" removed so the page doesn't reload -->
+    <form id="signupForm">
+      <div class="form-group">
+        <label for="name" class="form-label">Full Name</label>
+        <input type="text" id="name" name="name" placeholder="Your Name" class="form-input" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email" class="form-label">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" class="form-input" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" name="password" placeholder="Create a password (min. 6 chars)" class="form-input" required>
+      </div>
+
+      <button type="submit" class="btn-signup" id="signupBtn">Sign Up Now</button>
+    </form>
+
+    <div class="signup-footer">
+      <p>Already have an account? <a href="login.html">Log In</a></p>
+      <a href="index.html" class="back-home">← Back to Home</a>
+    </div>
+  </div>
+
+  <!-- ── Firebase-powered signup script ── -->
+  <script type="module">
+    import { signUp, isLoggedIn } from './firebase-config.js';
+
+    // Already logged in? Go straight to library
+    if (isLoggedIn()) {
+      window.location.href = './Library.html';
+    }
+
+    const form           = document.getElementById('signupForm');
+    const errorMessage   = document.getElementById('errorMessage');
+    const successMessage = document.getElementById('successMessage');
+    const signupBtn      = document.getElementById('signupBtn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name     = document.getElementById('name').value.trim();
+      const email    = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      // Clear messages
+      errorMessage.style.display  = 'none';
+      successMessage.style.display = 'none';
+
+      // Validation
+      if (!name || !email || !password) {
+        showError('❌ Please fill in all fields');
+        return;
+      }
+      if (password.length < 6) {
+        showError('❌ Password must be at least 6 characters');
+        return;
+      }
+
+      signupBtn.disabled    = true;
+      signupBtn.textContent = 'Creating account...';
+
+      // Call the service (Firebase → localStorage fallback)
+      const result = await signUp(name, email, password);
+
+      if (result.success) {
+        successMessage.textContent   = '✓ Account created! Redirecting to your library...';
+        successMessage.style.display = 'block';
+        setTimeout(() => { window.location.href = './Library.html'; }, 1000);
+      } else {
+        showError('❌ ' + result.error);
+        signupBtn.disabled    = false;
+        signupBtn.textContent = 'Sign Up Now';
+      }
+    });
+
+    function showError(msg) {
+      errorMessage.textContent    = msg;
+      errorMessage.style.display  = 'block';
+    }
+  </script>
+
+</body>
+</html>

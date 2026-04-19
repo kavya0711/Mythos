@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genres - MYTHOS</title>
+  <meta name="description" content="Browse book genres by age group">
+
+  <link rel="shortcut icon" href="./assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./assets/css/style.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Work+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --xiketic: #0f0f23;
+      --oxford-blue: #1a1a3e;
+      --jet: #2a2a4e;
+      --white_10: rgba(255, 255, 255, 0.1);
+      --white-1: #ffffff;
+      --white-2: #f0f0f0;
+      --spanish-gray: #9c9c9c;
+      --maximum-blue-green: #1dd4bf;
+      --selective-yellow: #ffb700;
+      --transition-1: 0.25s ease;
+      --ff-jost: 'Jost', sans-serif;
+      --fs-6: 0.875rem;
+      --fs-7: 0.75rem;
+      --fw-500: 500;
+      --fw-600: 600;
+      --fw-700: 700;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Work Sans', sans-serif;
+      background: linear-gradient(135deg, var(--xiketic) 0%, var(--oxford-blue) 100%);
+      color: var(--white-1);
+      min-height: 100vh;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      background: var(--oxford-blue);
+      border-bottom: 1px solid var(--white_10);
+      padding: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+
+    .navbar-left {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .navbar-brand {
+      font-size: 24px;
+      font-weight: var(--fw-700);
+      color: var(--maximum-blue-green);
+      text-decoration: none;
+      font-family: var(--ff-jost);
+      letter-spacing: 2px;
+      padding: 20px 40px;
+      border-right: 1px solid var(--white_10);
+      transition: var(--transition-1);
+    }
+
+    .navbar-brand:hover {
+      color: var(--selective-yellow);
+    }
+
+    .nav-menu {
+      display: flex;
+      list-style: none;
+      gap: 0;
+    }
+
+    .nav-item {
+      position: relative;
+    }
+
+    .nav-link {
+      display: block;
+      padding: 20px 25px;
+      color: var(--white-2);
+      text-decoration: none;
+      font-weight: var(--fw-600);
+      font-size: 14px;
+      transition: var(--transition-1);
+      border-right: 1px solid var(--white_10);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .nav-link:hover {
+      background: rgba(29, 212, 191, 0.1);
+      color: var(--maximum-blue-green);
+    }
+
+    .nav-link.active {
+      background: rgba(29, 212, 191, 0.2);
+      color: var(--maximum-blue-green);
+      border-left: 4px solid var(--maximum-blue-green);
+    }
+
+    .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 0 40px;
+    }
+
+    .navbar-user {
+      color: var(--white-2);
+      font-size: 14px;
+      font-weight: var(--fw-600);
+    }
+
+    .login-btn {
+      background: rgba(29, 212, 191, 0.2);
+      color: var(--maximum-blue-green);
+      border: 1px solid var(--maximum-blue-green);
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: var(--fw-600);
+      transition: var(--transition-1);
+      font-size: var(--fs-6);
+      text-decoration: none;
+    }
+
+    .login-btn:hover {
+      background: var(--maximum-blue-green);
+      color: var(--xiketic);
+    }
+
+    .logout-btn {
+      background: rgba(29, 212, 191, 0.2);
+      color: var(--maximum-blue-green);
+      border: 1px solid var(--maximum-blue-green);
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: var(--fw-600);
+      transition: var(--transition-1);
+      font-size: var(--fs-6);
+      display: none;
+    }
+
+    .logout-btn:hover {
+      background: var(--maximum-blue-green);
+      color: var(--xiketic);
+    }
+
+    .logout-btn.show {
+      display: block;
+    }
+
+    /* GENRES SECTION */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 60px 20px;
+    }
+
+    .genres-header {
+      text-align: center;
+      margin-bottom: 60px;
+      animation: fadeIn 0.6s ease;
+    }
+
+    .genres-header h1 {
+      font-size: 42px;
+      margin-bottom: 10px;
+      color: var(--white-1);
+      font-family: var(--ff-jost);
+      font-weight: var(--fw-700);
+      letter-spacing: 1px;
+    }
+
+    .genres-header p {
+      color: var(--spanish-gray);
+      font-size: 16px;
+      font-weight: var(--fw-500);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .genres-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 40px;
+      animation: gridFadeIn 0.6s ease 0.1s both;
+    }
+
+    @keyframes gridFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .genre-card {
+      background: var(--oxford-blue);
+      border: 2px solid var(--jet);
+      border-radius: 16px;
+      padding: 50px 40px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition-1);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+      display: block;
+    }
+
+    .genre-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(29, 212, 191, 0.1) 0%, transparent 100%);
+      opacity: 0;
+      transition: opacity var(--transition-1);
+      pointer-events: none;
+    }
+
+    .genre-card:hover {
+      transform: translateY(-15px);
+      border-color: var(--maximum-blue-green);
+      box-shadow: 0 20px 50px rgba(29, 212, 191, 0.2);
+    }
+
+    .genre-card:hover::before {
+      opacity: 1;
+    }
+
+    .genre-card-content {
+      position: relative;
+      z-index: 10;
+    }
+
+    .genre-icon {
+      font-size: 70px;
+      margin-bottom: 25px;
+      display: block;
+      transition: var(--transition-1);
+    }
+
+    .genre-card:hover .genre-icon {
+      transform: scale(1.1) rotate(-5deg);
+    }
+
+    .genre-card h2 {
+      font-size: 32px;
+      font-weight: var(--fw-700);
+      color: var(--white-1);
+      margin-bottom: 10px;
+      font-family: var(--ff-jost);
+      letter-spacing: 1px;
+    }
+
+    .genre-subtitle {
+      color: var(--maximum-blue-green);
+      font-size: 13px;
+      margin-bottom: 25px;
+      font-weight: var(--fw-600);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .genre-description {
+      color: var(--white-2);
+      font-size: 14px;
+      line-height: 1.7;
+      margin-bottom: 30px;
+      font-weight: var(--fw-500);
+    }
+
+    .genre-button {
+      display: inline-block;
+      background: var(--maximum-blue-green);
+      color: var(--xiketic);
+      border: 1px solid var(--maximum-blue-green);
+      padding: 14px 40px;
+      border-radius: 8px;
+      font-weight: var(--fw-700);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      transition: var(--transition-1);
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .genre-button:hover {
+      background: transparent;
+      color: var(--maximum-blue-green);
+      box-shadow: 0 0 0 2px var(--maximum-blue-green);
+      transform: translateY(-3px);
+    }
+
+    .genre-button:active {
+      transform: translateY(-1px);
+    }
+
+    .book-count {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--white_10);
+      font-size: 12px;
+      color: var(--spanish-gray);
+      font-weight: var(--fw-500);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .navbar-brand {
+        padding: 15px 30px;
+        font-size: 20px;
+      }
+
+      .nav-link {
+        padding: 15px 20px;
+        font-size: 12px;
+      }
+
+      .navbar-right {
+        padding: 0 30px;
+      }
+
+      .genres-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+      }
+
+      .genre-card {
+        padding: 40px 30px;
+      }
+
+      .genre-icon {
+        font-size: 60px;
+      }
+
+      .genre-card h2 {
+        font-size: 28px;
+      }
+
+      .genres-header h1 {
+        font-size: 36px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        padding: 15px 20px;
+      }
+
+      .navbar-left {
+        width: 100%;
+        border-bottom: 1px solid var(--white_10);
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+      }
+
+      .navbar-brand {
+        padding: 0;
+        border-right: none;
+        border-bottom: none;
+        font-size: 18px;
+      }
+
+      .nav-menu {
+        flex-direction: column;
+        gap: 0;
+        width: 100%;
+      }
+
+      .nav-link {
+        padding: 12px 15px;
+        border-right: none;
+        border-bottom: 1px solid var(--white_10);
+        font-size: 12px;
+      }
+
+      .navbar-right {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0;
+        gap: 15px;
+      }
+
+      .genres-header h1 {
+        font-size: 32px;
+      }
+
+      .genres-header p {
+        font-size: 14px;
+      }
+
+      .genres-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .genre-card {
+        padding: 35px 25px;
+      }
+
+      .genre-icon {
+        font-size: 50px;
+        margin-bottom: 15px;
+      }
+
+      .genre-card h2 {
+        font-size: 24px;
+      }
+
+      .genre-description {
+        font-size: 13px;
+        margin-bottom: 20px;
+      }
+
+      .container {
+        padding: 40px 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .navbar-brand {
+        font-size: 16px;
+      }
+
+      .genres-header h1 {
+        font-size: 26px;
+      }
+
+      .genre-card h2 {
+        font-size: 20px;
+      }
+
+      .genre-icon {
+        font-size: 40px;
+      }
+
+      .genre-button {
+        padding: 12px 30px;
+        font-size: 11px;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <!-- NAVIGATION -->
+  <nav class="navbar">
+    <div class="navbar-left">
+      <a href="index.html" class="navbar-brand">MYTHOS</a>
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="index.html" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item">
+          <a href="genres.html" class="nav-link active">Genres</a>
+        </li>
+        <li class="nav-item">
+          <a href="library.html" class="nav-link">All Library</a>
+        </li>
+        <li class="nav-item">
+          <a href="about.html" class="nav-link">About</a>
+        </li>
+        <li class="nav-item">
+          <a href="contact.html" class="nav-link">Contact</a>
+        </li>
+      </ul>
+    </div>
+    <div class="navbar-right">
+      <span class="navbar-user" id="userEmail" style="display: none;"></span>
+      <a href="login.html" class="login-btn" id="loginBtn">Login</a>
+      <button class="logout-btn" id="logoutBtn" onclick="handleLogout()">Logout</button>
+    </div>
+  </nav>
+
+  <!-- GENRES SECTION -->
+  <div class="container">
+    <div class="genres-header">
+      <h1>Explore by Age Group</h1>
+      <p>Choose your age group to discover stories perfect for you</p>
+    </div>
+
+    <div class="genres-grid">
+      <!-- KIDS -->
+      <a href="library.html?category=kids" class="genre-card">
+        <div class="genre-card-content">
+          <span class="genre-icon"></span>
+          <h2>Kids</h2>
+          <p class="genre-subtitle">0–12 Years</p>
+          <p class="genre-description">
+            Magical adventures, fun animals, bedtime stories, and moral tales for young readers. Perfect for building imagination and learning valuable lessons.
+          </p>
+          <button class="genre-button" onclick="event.preventDefault(); goToGenre('kids');">Explore Now</button>
+          <div class="book-count">30 Stories Available</div>
+        </div>
+      </a>
+
+      <!-- TEENS -->
+      <a href="library.html?category=teens" class="genre-card">
+        <div class="genre-card-content">
+          <span class="genre-icon"></span>
+          <h2>Teens</h2>
+          <p class="genre-subtitle">13–18 Years</p>
+          <p class="genre-description">
+            Coming-of-age stories, romance, fantasy worlds, and thrilling adventures. Discover tales of friendship, first love, and self-discovery.
+          </p>
+          <button class="genre-button" onclick="event.preventDefault(); goToGenre('teens');">Explore Now</button>
+          <div class="book-count">30 Stories Available</div>
+        </div>
+      </a>
+
+      <!-- ADULTS -->
+      <a href="library.html?category=adults" class="genre-card">
+        <div class="genre-card-content">
+          <span class="genre-icon"></span>
+          <h2>Adults</h2>
+          <p class="genre-subtitle">18+ Years</p>
+          <p class="genre-description">
+            Psychological thrillers, crime mysteries, romance, sci-fi, and literary fiction. Sophisticated stories for mature readers.
+          </p>
+          <button class="genre-button" onclick="event.preventDefault(); goToGenre('adults');">Explore Now</button>
+          <div class="book-count">30 Stories Available</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // Check if user is logged in
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const userEmail = localStorage.getItem('userEmail') || 'User';
+    const userName = localStorage.getItem('userName') || 'Guest';
+
+    if (isLoggedIn) {
+      document.getElementById('userEmail').textContent = `Welcome, ${userName}!`;
+      document.getElementById('userEmail').style.display = 'block';
+      document.getElementById('loginBtn').style.display = 'none';
+      document.getElementById('logoutBtn').classList.add('show');
+    } else {
+      document.getElementById('loginBtn').style.display = 'block';
+      document.getElementById('logoutBtn').classList.remove('show');
+    }
+
+    // Navigate to genre
+    function goToGenre(genre) {
+      if (isLoggedIn) {
+        window.location.href = `library.html?category=${genre}`;
+      } else {
+        window.location.href = `library.html?category=${genre}`;
+      }
+    }
+
+    // Logout function
+    function handleLogout() {
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('userEmail');
+      localStorage.removeItem('userName');
+      window.location.href = './login.html';
+    }
+  </script>
+
+</body>
+
+</html>

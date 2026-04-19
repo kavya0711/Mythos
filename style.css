@@ -1,0 +1,104 @@
+/*-----------------------------------*\
+  #AUTH PAGE - REFINED COLORS
+\*-----------------------------------*/
+
+.auth-section {
+  background-color: var(--xiketic);
+  /* Adding a subtle radial gradient for depth */
+  background-image: radial-gradient(circle at top left, var(--oxford-blue), transparent);
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.auth-card {
+  background-color: var(--oxford-blue);
+  border: 1px solid var(--white_10);
+  padding: 40px;
+  border-radius: 16px;
+  max-width: 450px;
+  width: 100%;
+  /* Deep shadow with a hint of navy */
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.auth-card .section-title {
+  color: var(--white-1);
+  text-align: center;
+  margin-block-end: 10px;
+}
+
+.auth-card .section-text {
+  color: var(--spanish-gray);
+  text-align: center;
+  margin-block-end: 30px;
+}
+
+/* Input Group Styling */
+.input-wrapper { margin-block-end: 20px; }
+
+.input-label {
+  display: block;
+  color: var(--white-2);
+  font-family: var(--ff-jost);
+  font-size: var(--fs-6);
+  font-weight: var(--fw-500);
+  margin-block-end: 8px;
+}
+
+.auth-card .input-field {
+  background-color: var(--xiketic); /* Darker than the card for contrast */
+  border: 1px solid var(--jet);
+  color: var(--white-1);
+  padding: 14px 16px;
+  border-radius: 8px;
+  font-size: var(--fs-6);
+  transition: var(--transition-1);
+}
+
+.auth-card .input-field:focus {
+  outline: none;
+  border-color: var(--maximum-blue-green);
+  /* Creates a subtle glow effect */
+  box-shadow: 0 0 0 4px hsla(184, 50%, 60%, 0.15);
+}
+
+/* Auth Button Styling */
+.auth-card .btn-primary {
+  background-color: var(--maximum-blue-green);
+  color: var(--xiketic); /* Dark text for legibility on light background */
+  border: 1px solid var(--maximum-blue-green);
+  width: 100%;
+  justify-content: center;
+  padding-block: 15px;
+  margin-block-start: 10px;
+  font-weight: var(--fw-700);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.auth-card .btn-primary:is(:hover, :focus) {
+  background-color: transparent;
+  color: var(--maximum-blue-green);
+}
+
+/* Footer Link Colors */
+.auth-footer-text {
+  margin-block-start: 25px;
+  text-align: center;
+  color: var(--spanish-gray);
+  font-size: var(--fs-7);
+}
+
+.auth-link {
+  display: inline;
+  color: var(--maximum-blue-green);
+  font-weight: var(--fw-500);
+  transition: var(--transition-1);
+}
+
+.auth-link:is(:hover, :focus) {
+  color: var(--selective-yellow); /* Provides a nice pop of color */
+  text-decoration: underline;
+}

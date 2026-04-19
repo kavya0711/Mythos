@@ -1,0 +1,272 @@
+<!-- 
+  ════════════════════════════════════════════════════
+  LIBRARY.HTML — SCRIPT SECTION REPLACEMENT
+  
+  In your Library.html, find the existing <script> block
+  (starts with: // Check if user is logged in)
+  and REPLACE the entire <script>...</script> block
+  with the one below.
+
+  Everything above (HTML/CSS) stays exactly the same.
+  ════════════════════════════════════════════════════
+-->
+
+<script type="module">
+  import { isLoggedIn, getCurrentUser, logOut, saveProgress, getProgress } from './firebase-config.js';
+
+  // ── Auth guard ──
+  if (!isLoggedIn()) {
+    window.location.href = './login.html';
+  }
+
+  // ── Show user name in navbar ──
+  const user = getCurrentUser();
+  document.getElementById('userEmail').textContent = `Welcome, ${user.name}!`;
+
+  // ── Expose logout to the inline onclick handler in the HTML ──
+  window.handleLogout = () => logOut();
+
+  // ────────────────────────────────────────────────
+  //  ALL YOUR EXISTING STORY DATA — UNCHANGED BELOW
+  // ────────────────────────────────────────────────
+
+  const defaultStoryPages = [
+    '<h2>Chapter 1</h2><p>This is the beginning of an exciting story. The author has crafted this tale with care, hoping to transport you to worlds of wonder and imagination. Every page will reveal new mysteries and adventures waiting to be discovered.</p>',
+    '<h2>Chapter 2</h2><p>As the story unfolds, new characters emerge from the shadows. Their motivations are complex, their dreams are real, and their journeys intertwine with the fate of the world around them. What will happen next?</p>',
+    '<h2>Chapter 3</h2><p>The plot thickens as conflicts arise. Tensions build, emotions run high, and the stakes become clearer with each passing moment. Our characters must make difficult choices that will shape their destinies forever.</p>',
+    '<h2>Chapter 4</h2><p>Midway through the narrative, a shocking revelation changes everything we thought we knew. The truth is more complex than anyone imagined, and the journey takes an unexpected turn toward its climax.</p>',
+    '<h2>Chapter 5</h2><p>As the story reaches its conclusion, all threads come together in a satisfying resolution. The characters have learned valuable lessons, grown as individuals, and discovered truths about themselves and the world around them.</p>'
+  ];
+
+  const bookDatabase = {
+    'the-lost-treasure':    { title: 'The Lost Treasure of Jungle Island',  pages: defaultStoryPages },
+    'timmy-secret-cave':    { title: 'Timmy and the Secret Cave',            pages: defaultStoryPages },
+    'magic-balloon-ride':   { title: 'The Magic Balloon Ride',               pages: defaultStoryPages },
+    'hidden-treehouse':     { title: 'The Hidden Treehouse',                 pages: defaultStoryPages },
+    'pirate-golden-compass':{ title: "The Pirate's Golden Compass",          pages: defaultStoryPages },
+    'princess-moonlight':   { title: 'The Princess of Moonlight Valley',     pages: defaultStoryPages },
+    'enchanted-forest':     { title: 'The Enchanted Forest Secret',          pages: defaultStoryPages },
+    'talking-unicorn':      { title: 'The Talking Unicorn',                  pages: defaultStoryPages },
+    'crystal-fairy-kingdom':{ title: 'The Crystal Fairy Kingdom',            pages: defaultStoryPages },
+    'dragon-couldnt-fly':   { title: "The Dragon Who Couldn't Fly",          pages: defaultStoryPages },
+    'sleepy-star':          { title: 'The Sleepy Star',                      pages: defaultStoryPages },
+    'night-moon-smiled':    { title: 'The Night the Moon Smiled',            pages: defaultStoryPages },
+    'dreamland-express':    { title: 'Dreamland Express',                    pages: defaultStoryPages },
+    'cloud-that-sang':      { title: 'The Cloud That Sang',                  pages: defaultStoryPages },
+    'little-boy-night-sky': { title: 'The Little Boy and the Night Sky',     pages: defaultStoryPages },
+    'benny-brave-bunny':    { title: 'Benny the Brave Bunny',                pages: defaultStoryPages },
+    'clever-little-fox':    { title: 'The Clever Little Fox',                pages: defaultStoryPages },
+    'leo-lazy-lion':        { title: 'Leo the Lazy Lion',                    pages: defaultStoryPages },
+    'penguin-wanted-fly':   { title: 'The Penguin Who Wanted to Fly',        pages: defaultStoryPages },
+    'elephant-who-forgot':  { title: 'The Elephant Who Forgot',              pages: defaultStoryPages },
+    'boy-shared-everything':{ title: 'The Boy Who Shared Everything',        pages: defaultStoryPages },
+    'honest-woodcutter':    { title: 'The Honest Woodcutter',                pages: defaultStoryPages },
+    'greedy-farmer':        { title: 'The Greedy Farmer',                    pages: defaultStoryPages },
+    'kindness-comes-back':  { title: 'Kindness Comes Back',                  pages: defaultStoryPages },
+    'power-of-truth':       { title: 'The Power of Truth',                   pages: defaultStoryPages },
+    'missing-toy-mystery':  { title: 'The Missing Toy Mystery',              pages: defaultStoryPages },
+    'broken-window-case':   { title: 'The Case of the Broken Window',        pages: defaultStoryPages },
+    'secret-old-school':    { title: 'The Secret Behind the Old School',     pages: defaultStoryPages },
+    'hidden-map-puzzle':    { title: 'The Hidden Map Puzzle',                pages: defaultStoryPages },
+    'library-ghost-mystery':{ title: 'The Library Ghost Mystery',            pages: defaultStoryPages },
+    'love-last-semester':   { title: 'Love in the Last Semester',            pages: defaultStoryPages },
+    'girl-next-door':       { title: 'The Girl Next Door',                   pages: defaultStoryPages },
+    'between-love-lies':    { title: 'Between Love and Lies',                pages: defaultStoryPages },
+    'summer-we-changed':    { title: 'The Summer We Changed',                pages: defaultStoryPages },
+    'were-my-almost':       { title: 'You Were My Almost',                   pages: defaultStoryPages },
+    'kingdom-shadows':      { title: 'The Kingdom of Shadows',               pages: defaultStoryPages },
+    'last-magic-keeper':    { title: 'The Last Magic Keeper',                pages: defaultStoryPages },
+    'girl-controlled-fire': { title: 'The Girl Who Controlled Fire',         pages: defaultStoryPages },
+    'war-hidden-realms':    { title: 'War of the Hidden Realms',             pages: defaultStoryPages },
+    'crown-darkness':       { title: 'The Crown of Darkness',                pages: defaultStoryPages },
+    'popular-but-lonely':   { title: 'Popular But Lonely',                   pages: defaultStoryPages },
+    'secrets-hallway':      { title: 'Secrets in the Hallway',               pages: defaultStoryPages },
+    'final-year-chaos':     { title: 'The Final Year Chaos',                 pages: defaultStoryPages },
+    'friends-fights-forever':{ title: 'Friends, Fights & Forever',           pages: defaultStoryPages },
+    'truth-behind-smile':   { title: 'The Truth Behind the Smile',           pages: defaultStoryPages },
+    'bound-by-secrets':     { title: 'Bound by Secrets',                     pages: defaultStoryPages },
+    'dangerous-attraction': { title: 'Dangerous Attraction',                 pages: defaultStoryPages },
+    'love-dark':            { title: 'Love in the Dark',                     pages: defaultStoryPages },
+    'his-twisted-world':    { title: 'His Twisted World',                    pages: defaultStoryPages },
+    'falling-villain':      { title: 'Falling for the Villain',              pages: defaultStoryPages },
+    'island-no-return':     { title: 'The Island of No Return',              pages: defaultStoryPages },
+    'midnight-expedition':  { title: 'The Midnight Expedition',              pages: defaultStoryPages },
+    'lost-forbidden-zone':  { title: 'Lost in the Forbidden Zone',           pages: defaultStoryPages },
+    'secret-mission':       { title: 'The Secret Mission',                   pages: defaultStoryPages },
+    'beyond-unknown':       { title: 'Beyond the Unknown',                   pages: defaultStoryPages },
+    'locker-secret':        { title: 'The Locker Secret',                    pages: defaultStoryPages },
+    'sent-message':         { title: 'Who Sent the Message?',                pages: defaultStoryPages },
+    'disappearing-student': { title: 'The Disappearing Student',             pages: defaultStoryPages },
+    'night-nobody-returned':{ title: 'The Night Nobody Returned',            pages: defaultStoryPages },
+    'truth-behind-mask':    { title: 'Truth Behind the Mask',                pages: defaultStoryPages },
+    'mind-game':            { title: 'The Mind Game',                        pages: defaultStoryPages },
+    'voices-inside':        { title: 'Voices Inside',                        pages: defaultStoryPages },
+    'perfect-lie':          { title: 'The Perfect Lie',                      pages: defaultStoryPages },
+    'man-who-watched':      { title: 'The Man Who Watched',                  pages: defaultStoryPages },
+    'behind-closed-eyes':   { title: 'Behind Closed Eyes',                   pages: defaultStoryPages },
+    'silent-witness':       { title: 'The Silent Witness',                   pages: defaultStoryPages },
+    'murder-at-midnight':   { title: 'Murder at Midnight',                   pages: defaultStoryPages },
+    'vanishing-case':       { title: 'The Vanishing Case',                   pages: defaultStoryPages },
+    'detective-secret':     { title: "The Detective's Secret",               pages: defaultStoryPages },
+    'final-clue':           { title: 'The Final Clue',                       pages: defaultStoryPages },
+    'love-after-goodbye':   { title: 'Love After Goodbye',                   pages: defaultStoryPages },
+    'broken-but-beautiful': { title: 'Broken But Beautiful',                 pages: defaultStoryPages },
+    'when-we-met-again':    { title: 'When We Met Again',                    pages: defaultStoryPages },
+    'one-that-stayed':      { title: 'The One That Stayed',                  pages: defaultStoryPages },
+    'love-worth-waiting':   { title: 'A Love Worth Waiting',                 pages: defaultStoryPages },
+    'last-human-colony':    { title: 'The Last Human Colony',                pages: defaultStoryPages },
+    'beyond-earth':         { title: 'Beyond Earth',                         pages: defaultStoryPages },
+    'time-traveler-secret': { title: "The Time Traveler's Secret",           pages: defaultStoryPages },
+    'ai-awakening':         { title: 'AI: The Awakening',                    pages: defaultStoryPages },
+    'planet-unknown':       { title: 'The Planet Unknown',                   pages: defaultStoryPages },
+    'house-that-watches':   { title: 'The House That Watches',               pages: defaultStoryPages },
+    'dont-open-door':       { title: "Don't Open the Door",                  pages: defaultStoryPages },
+    'whispering-shadows':   { title: 'The Whispering Shadows',               pages: defaultStoryPages },
+    'midnight-screams':     { title: 'Midnight Screams',                     pages: defaultStoryPages },
+    'thing-in-mirror':      { title: 'The Thing in the Mirror',              pages: defaultStoryPages },
+    'weight-of-choices':    { title: 'The Weight of Choices',                pages: defaultStoryPages },
+    'life-unwritten':       { title: 'A Life Unwritten',                     pages: defaultStoryPages },
+    'silent-years':         { title: 'The Silent Years',                     pages: defaultStoryPages },
+    'echoes-of-past':       { title: 'Echoes of the Past',                   pages: defaultStoryPages },
+    'road-we-took':         { title: 'The Road We Took',                     pages: defaultStoryPages }
+  };
+
+  const books = {
+    kidsAdventure:        [ { id: 'the-lost-treasure',     title: 'The Lost Treasure of Jungle Island',  genre: 'Adventure'    }, { id: 'timmy-secret-cave',     title: 'Timmy and the Secret Cave',            genre: 'Adventure'    }, { id: 'magic-balloon-ride',    title: 'The Magic Balloon Ride',               genre: 'Adventure'    }, { id: 'hidden-treehouse',      title: 'The Hidden Treehouse',                 genre: 'Adventure'    }, { id: 'pirate-golden-compass', title: "The Pirate's Golden Compass",           genre: 'Adventure'    } ],
+    kidsFairy:            [ { id: 'princess-moonlight',    title: 'The Princess of Moonlight Valley',     genre: 'Fantasy'      }, { id: 'enchanted-forest',      title: 'The Enchanted Forest Secret',           genre: 'Fantasy'      }, { id: 'talking-unicorn',       title: 'The Talking Unicorn',                   genre: 'Fantasy'      }, { id: 'crystal-fairy-kingdom', title: 'The Crystal Fairy Kingdom',              genre: 'Fantasy'      }, { id: 'dragon-couldnt-fly',    title: "The Dragon Who Couldn't Fly",           genre: 'Fantasy'      } ],
+    kidsBedtime:          [ { id: 'sleepy-star',           title: 'The Sleepy Star',                      genre: 'Bedtime'      }, { id: 'night-moon-smiled',     title: 'The Night the Moon Smiled',             genre: 'Bedtime'      }, { id: 'dreamland-express',     title: 'Dreamland Express',                     genre: 'Bedtime'      }, { id: 'cloud-that-sang',       title: 'The Cloud That Sang',                   genre: 'Bedtime'      }, { id: 'little-boy-night-sky',  title: 'The Little Boy and the Night Sky',      genre: 'Bedtime'      } ],
+    kidsAnimal:           [ { id: 'benny-brave-bunny',     title: 'Benny the Brave Bunny',                genre: 'Animals'      }, { id: 'clever-little-fox',     title: 'The Clever Little Fox',                 genre: 'Animals'      }, { id: 'leo-lazy-lion',         title: 'Leo the Lazy Lion',                     genre: 'Animals'      }, { id: 'penguin-wanted-fly',    title: 'The Penguin Who Wanted to Fly',         genre: 'Animals'      }, { id: 'elephant-who-forgot',   title: 'The Elephant Who Forgot',               genre: 'Animals'      } ],
+    kidsMoral:            [ { id: 'boy-shared-everything', title: 'The Boy Who Shared Everything',        genre: 'Moral'        }, { id: 'honest-woodcutter',     title: 'The Honest Woodcutter',                 genre: 'Moral'        }, { id: 'greedy-farmer',         title: 'The Greedy Farmer',                     genre: 'Moral'        }, { id: 'kindness-comes-back',   title: 'Kindness Comes Back',                   genre: 'Moral'        }, { id: 'power-of-truth',        title: 'The Power of Truth',                    genre: 'Moral'        } ],
+    kidsMystery:          [ { id: 'missing-toy-mystery',   title: 'The Missing Toy Mystery',              genre: 'Mystery'      }, { id: 'broken-window-case',    title: 'The Case of the Broken Window',         genre: 'Mystery'      }, { id: 'secret-old-school',     title: 'The Secret Behind the Old School',      genre: 'Mystery'      }, { id: 'hidden-map-puzzle',     title: 'The Hidden Map Puzzle',                 genre: 'Mystery'      }, { id: 'library-ghost-mystery', title: 'The Library Ghost Mystery',              genre: 'Mystery'      } ],
+    teensRomance:         [ { id: 'love-last-semester',    title: 'Love in the Last Semester',            genre: 'Romance'      }, { id: 'girl-next-door',        title: 'The Girl Next Door',                    genre: 'Romance'      }, { id: 'between-love-lies',     title: 'Between Love and Lies',                 genre: 'Romance'      }, { id: 'summer-we-changed',     title: 'The Summer We Changed',                 genre: 'Romance'      }, { id: 'were-my-almost',        title: 'You Were My Almost',                    genre: 'Romance'      } ],
+    teensFantasy:         [ { id: 'kingdom-shadows',       title: 'The Kingdom of Shadows',               genre: 'Fantasy'      }, { id: 'last-magic-keeper',     title: 'The Last Magic Keeper',                 genre: 'Fantasy'      }, { id: 'girl-controlled-fire',  title: 'The Girl Who Controlled Fire',          genre: 'Fantasy'      }, { id: 'war-hidden-realms',     title: 'War of the Hidden Realms',              genre: 'Fantasy'      }, { id: 'crown-darkness',        title: 'The Crown of Darkness',                 genre: 'Fantasy'      } ],
+    teensSchool:          [ { id: 'popular-but-lonely',    title: 'Popular But Lonely',                   genre: 'Drama'        }, { id: 'secrets-hallway',       title: 'Secrets in the Hallway',                genre: 'Drama'        }, { id: 'final-year-chaos',      title: 'The Final Year Chaos',                  genre: 'Drama'        }, { id: 'friends-fights-forever',title: 'Friends, Fights & Forever',              genre: 'Drama'        }, { id: 'truth-behind-smile',    title: 'The Truth Behind the Smile',            genre: 'Drama'        } ],
+    teensDarkRomance:     [ { id: 'bound-by-secrets',      title: 'Bound by Secrets',                     genre: 'Dark Romance' }, { id: 'dangerous-attraction',  title: 'Dangerous Attraction',                  genre: 'Dark Romance' }, { id: 'love-dark',             title: 'Love in the Dark',                      genre: 'Dark Romance' }, { id: 'his-twisted-world',     title: 'His Twisted World',                     genre: 'Dark Romance' }, { id: 'falling-villain',       title: 'Falling for the Villain',               genre: 'Dark Romance' } ],
+    teensAdventure:       [ { id: 'island-no-return',      title: 'The Island of No Return',              genre: 'Adventure'    }, { id: 'midnight-expedition',   title: 'The Midnight Expedition',               genre: 'Adventure'    }, { id: 'lost-forbidden-zone',   title: 'Lost in the Forbidden Zone',            genre: 'Adventure'    }, { id: 'secret-mission',        title: 'The Secret Mission',                    genre: 'Adventure'    }, { id: 'beyond-unknown',        title: 'Beyond the Unknown',                    genre: 'Adventure'    } ],
+    teensMystery:         [ { id: 'locker-secret',         title: 'The Locker Secret',                    genre: 'Mystery'      }, { id: 'sent-message',          title: 'Who Sent the Message?',                 genre: 'Mystery'      }, { id: 'disappearing-student',  title: 'The Disappearing Student',              genre: 'Mystery'      }, { id: 'night-nobody-returned', title: 'The Night Nobody Returned',             genre: 'Mystery'      }, { id: 'truth-behind-mask',     title: 'Truth Behind the Mask',                 genre: 'Mystery'      } ],
+    adultsThrill:         [ { id: 'mind-game',             title: 'The Mind Game',                        genre: 'Thriller'     }, { id: 'voices-inside',         title: 'Voices Inside',                         genre: 'Thriller'     }, { id: 'perfect-lie',           title: 'The Perfect Lie',                       genre: 'Thriller'     }, { id: 'man-who-watched',       title: 'The Man Who Watched',                   genre: 'Thriller'     }, { id: 'behind-closed-eyes',    title: 'Behind Closed Eyes',                    genre: 'Thriller'     } ],
+    adultsCrime:          [ { id: 'silent-witness',        title: 'The Silent Witness',                   genre: 'Crime'        }, { id: 'murder-at-midnight',    title: 'Murder at Midnight',                    genre: 'Crime'        }, { id: 'vanishing-case',        title: 'The Vanishing Case',                    genre: 'Crime'        }, { id: 'detective-secret',      title: "The Detective's Secret",                genre: 'Crime'        }, { id: 'final-clue',            title: 'The Final Clue',                        genre: 'Crime'        } ],
+    adultsRomance:        [ { id: 'love-after-goodbye',    title: 'Love After Goodbye',                   genre: 'Romance'      }, { id: 'broken-but-beautiful',  title: 'Broken But Beautiful',                  genre: 'Romance'      }, { id: 'when-we-met-again',     title: 'When We Met Again',                     genre: 'Romance'      }, { id: 'one-that-stayed',       title: 'The One That Stayed',                   genre: 'Romance'      }, { id: 'love-worth-waiting',    title: 'A Love Worth Waiting',                  genre: 'Romance'      } ],
+    adultsScienceFiction: [ { id: 'last-human-colony',     title: 'The Last Human Colony',                genre: 'Sci-Fi'       }, { id: 'beyond-earth',          title: 'Beyond Earth',                          genre: 'Sci-Fi'       }, { id: 'time-traveler-secret',  title: "The Time Traveler's Secret",            genre: 'Sci-Fi'       }, { id: 'ai-awakening',          title: 'AI: The Awakening',                     genre: 'Sci-Fi'       }, { id: 'planet-unknown',        title: 'The Planet Unknown',                    genre: 'Sci-Fi'       } ],
+    adultsHorror:         [ { id: 'house-that-watches',    title: 'The House That Watches',               genre: 'Horror'       }, { id: 'dont-open-door',        title: "Don't Open the Door",                   genre: 'Horror'       }, { id: 'whispering-shadows',    title: 'The Whispering Shadows',                genre: 'Horror'       }, { id: 'midnight-screams',      title: 'Midnight Screams',                      genre: 'Horror'       }, { id: 'thing-in-mirror',       title: 'The Thing in the Mirror',               genre: 'Horror'       } ],
+    adultsLiterary:       [ { id: 'weight-of-choices',     title: 'The Weight of Choices',                genre: 'Literary'     }, { id: 'life-unwritten',        title: 'A Life Unwritten',                      genre: 'Literary'     }, { id: 'silent-years',          title: 'The Silent Years',                      genre: 'Literary'     }, { id: 'echoes-of-past',        title: 'Echoes of the Past',                    genre: 'Literary'     }, { id: 'road-we-took',          title: 'The Road We Took',                      genre: 'Literary'     } ],
+  };
+
+  // ── Render all book cards ──
+  function renderBooks(category, containerId) {
+    const container = document.getElementById(containerId);
+    if (!container || !books[category]) return;
+    container.innerHTML = books[category].map(book => `
+      <div class="book-card">
+        <div class="book-cover">
+          <img src="./assets/images/book-1.png" alt="${book.title}" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+        <div class="book-info">
+          <div class="book-title">${book.title}</div>
+          <div class="book-genre">${book.genre}</div>
+          <button class="read-btn" onclick="window.openReader('${book.id}')">Read Now</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // ── Reader state ──
+  let currentBook      = null;
+  let currentBookId    = null;
+  let currentPageIndex = 0;
+
+  // ── Open reader: load saved progress from Firebase/localStorage ──
+  window.openReader = async function(bookId) {
+    currentBook      = bookDatabase[bookId];
+    currentBookId    = bookId;
+    if (!currentBook) return;
+
+    // Restore saved page (async — Firebase or local)
+    currentPageIndex = await getProgress(bookId);
+    // Clamp in case pages changed
+    if (currentPageIndex >= currentBook.pages.length) currentPageIndex = 0;
+
+    document.getElementById('readerTitle').textContent    = currentBook.title;
+    document.getElementById('totalPageNum').textContent   = currentBook.pages.length;
+
+    renderPages();
+    updatePageDisplay();
+    document.getElementById('readerModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.closeReader = function() {
+    document.getElementById('readerModal').classList.remove('active');
+    document.body.style.overflow = 'auto';
+    currentBook      = null;
+    currentBookId    = null;
+    currentPageIndex = 0;
+  };
+
+  function renderPages() {
+    const container = document.getElementById('pagesContainer');
+    container.innerHTML = '';
+    currentBook.pages.forEach((pageContent, index) => {
+      const pageDiv = document.createElement('div');
+      pageDiv.className = 'page';
+      if (index === currentPageIndex) pageDiv.classList.add('active');
+      pageDiv.innerHTML = pageContent;
+      container.appendChild(pageDiv);
+    });
+  }
+
+  function updatePageDisplay() {
+    const pages = document.querySelectorAll('.page');
+    pages.forEach((page, index) => {
+      page.classList.remove('active', 'exit-left', 'exit-right');
+      if (index === currentPageIndex) page.classList.add('active');
+    });
+    document.getElementById('currentPageNum').textContent = currentPageIndex + 1;
+    updateProgressBar();
+    updateButtons();
+  }
+
+  function updateProgressBar() {
+    const progress = ((currentPageIndex + 1) / currentBook.pages.length) * 100;
+    document.getElementById('progressFill').style.width = progress + '%';
+  }
+
+  function updateButtons() {
+    document.getElementById('prevBtn').disabled = currentPageIndex === 0;
+    document.getElementById('nextBtn').disabled = currentPageIndex === currentBook.pages.length - 1;
+  }
+
+  window.nextPage = function() {
+    if (currentPageIndex < currentBook.pages.length - 1) {
+      document.querySelectorAll('.page')[currentPageIndex].classList.add('exit-left');
+      currentPageIndex++;
+      updatePageDisplay();
+      saveProgress(currentBookId, currentPageIndex); // 🔥 auto-save to Firebase/local
+    }
+  };
+
+  window.previousPage = function() {
+    if (currentPageIndex > 0) {
+      document.querySelectorAll('.page')[currentPageIndex].classList.add('exit-right');
+      currentPageIndex--;
+      updatePageDisplay();
+      saveProgress(currentBookId, currentPageIndex); // 🔥 auto-save to Firebase/local
+    }
+  };
+
+  // ── Keyboard navigation (unchanged) ──
+  document.addEventListener('keydown', function(event) {
+    if (document.getElementById('readerModal').classList.contains('active')) {
+      if (event.key === 'ArrowRight') window.nextPage();
+      if (event.key === 'ArrowLeft')  window.previousPage();
+      if (event.key === 'Escape')     window.closeReader();
+    }
+  });
+
+  // ── Render all sections ──
+  ['kidsAdventure','kidsFairy','kidsBedtime','kidsAnimal','kidsMoral','kidsMystery',
+   'teensRomance','teensFantasy','teensSchool','teensDarkRomance','teensAdventure','teensMystery',
+   'adultsThrill','adultsCrime','adultsRomance','adultsScienceFiction','adultsHorror','adultsLiterary'
+  ].forEach(cat => renderBooks(cat, cat));
+
+</script>

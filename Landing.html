@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Welcome</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&display=swap');
+
+    *, *::before, *::after {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      background: #000;
+      font-family: 'Syne', sans-serif;
+    }
+
+    /* ── Video ── */
+    #bg-video {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    /* ── Bottom vignette ── */
+    .vignette {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        transparent 55%,
+        rgba(0,0,0,0.55) 100%
+      );
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* ── CTA ── */
+    .cta-wrap {
+      position: fixed;
+      bottom: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      animation: fadeUp 1.2s cubic-bezier(.22,1,.36,1) both;
+      animation-delay: 0.6s;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateX(-50%) translateY(28px); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+
+    .cta-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 48px;
+      background: rgba(255,255,255,0.12);
+      border: 1.5px solid rgba(255,255,255,0.55);
+      border-radius: 60px;
+      color: #fff;
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      overflow: hidden;
+      transition: 0.3s;
+    }
+
+    .cta-btn:hover {
+      border-color: rgba(255,255,255,0.9);
+      transform: scale(1.04);
+    }
+
+    .cta-btn:active { transform: scale(0.98); }
+
+    /* Arrow */
+    .arrow {
+      width: 22px; height: 22px;
+      position: relative;
+      transition: 0.3s;
+    }
+
+    .cta-btn:hover .arrow { transform: translateX(5px); }
+
+    .arrow::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 0;
+      width: 100%; height: 2px;
+      background: #fff;
+      transform: translateY(-50%);
+    }
+
+    .arrow::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 50%;
+      width: 8px; height: 8px;
+      border-top: 2px solid #fff;
+      border-right: 2px solid #fff;
+      transform: translateY(-50%) rotate(45deg);
+    }
+
+    /* Hint */
+    .hint {
+      display: flex; gap: 6px;
+      align-items: center;
+      opacity: 0.45;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      color: #fff;
+      text-transform: uppercase;
+    }
+
+    .dot {
+      width: 5px; height: 5px;
+      background: #fff;
+      border-radius: 50%;
+      animation: pulse 1.6s infinite;
+    }
+
+    .dot:nth-child(2) { animation-delay: 0.2s; }
+    .dot:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes pulse {
+      0%,100% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.4); }
+    }
+
+    /* ── Sound Button ── */
+    .sound-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 3;
+      padding: 10px 16px;
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.1);
+      color: white;
+      font-size: 0.8rem;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: 0.3s;
+    }
+
+    .sound-btn:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- Video -->
+  <video
+    id="bg-video"
+    src="assets/images/Landing.mp4"
+    autoplay
+    muted
+    loop
+    playsinline
+  ></video>
+
+  <!-- Vignette -->
+  <div class="vignette"></div>
+
+  <!-- Sound Button -->
+  <button class="sound-btn" id="soundToggle">🔊 Enable Sound</button>
+
+  <!-- CTA -->
+  <div class="cta-wrap">
+    <a class="cta-btn" href="index.html">
+      Get Started
+      <span class="arrow"></span>
+    </a>
+
+    <div class="hint">
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span>Explore</span>
+    </div>
+  </div>
+
+  <!-- SCRIPT -->
+  <script>
+    const video = document.getElementById("bg-video");
+    const soundBtn = document.getElementById("soundToggle");
+
+    // Enable sound on button click
+    soundBtn.addEventListener("click", () => {
+      video.muted = false;
+      video.play();
+      soundBtn.style.display = "none";
+    });
+
+    // Also enable sound if user clicks anywhere
+    document.addEventListener("click", () => {
+      video.muted = false;
+      video.play();
+      soundBtn.style.display = "none";
+    }, { once: true });
+  </script>
+
+</body>
+</html>

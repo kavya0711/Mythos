@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — MYTHOS</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Work+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./assets/css/style.css">
+
+  <style>
+    :root {
+      --bg-color: #000000;
+      --card-bg: rgba(233, 226, 226, 0.95);
+      --primary-accent: hsl(202, 72%, 40%);
+    }
+
+    body {
+      background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'); 
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Work Sans', sans-serif;
+    }
+
+    .login-container {
+      background: var(--card-bg);
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+      backdrop-filter: blur(5px);
+    }
+
+    .login-container .logo { display: inline-block; margin-bottom: 20px; }
+
+    /* ── Tab switcher ── */
+    .auth-tabs {
+      display: flex;
+      border-bottom: 2px solid #ddd;
+      margin-bottom: 28px;
+    }
+    .auth-tab {
+      flex: 1; padding: 11px 8px;
+      background: none; border: none; cursor: pointer;
+      font-family: 'Work Sans', sans-serif;
+      font-size: 1.4rem; font-weight: 600;
+      color: #aaa;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.25s;
+    }
+    .auth-tab.active { color: var(--primary-accent); border-bottom-color: var(--primary-accent); }
+    .auth-tab:hover:not(.active) { color: #555; }
+
+    /* ── Panels ── */
+    .auth-panel { display: none; }
+    .auth-panel.active { display: block; }
+
+    .login-title {
+      font-family: 'Jost', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .login-text { color: #020202; font-size: 1.4rem; margin-bottom: 30px; }
+
+    .form-group { margin-bottom: 20px; text-align: left; }
+
+    .form-label {
+      display: block;
+      font-size: 1.4rem;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: #444;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #000000;
+      border-radius: 4px;
+      outline: none;
+      transition: border-color 0.2s;
+      color: #000000;
+      background-color: #ffffff;
+      box-sizing: border-box;
+      font-size: 1.4rem;
+      font-family: 'Work Sans', sans-serif;
+    }
+
+    .form-input::placeholder { color: #999999; }
+
+    .form-input:focus {
+      border-color: var(--primary-accent);
+      box-shadow: 0 0 8px rgba(29, 158, 207, 0.3);
+    }
+
+    .btn-login {
+      width: 100%;
+      margin-top: 10px;
+      padding: 15px;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 1px;
+      cursor: pointer;
+      background-color: var(--primary-accent);
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      font-size: 1.4rem;
+      font-family: 'Work Sans', sans-serif;
+      transition: all 0.3s ease;
+    }
+
+    .btn-login:hover:not(:disabled) {
+      background-color: #1a7fa8;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(29, 158, 207, 0.3);
+    }
+
+    .btn-login:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ── Alert messages (replaces separate error/success divs) ── */
+    .alert-msg {
+      padding: 12px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      font-size: 1.2rem;
+      text-align: left;
+      line-height: 1.5;
+      display: none;
+    }
+    .alert-msg.error   { color: #d32f2f; background-color: #ffebee; border-left: 4px solid #d32f2f; }
+    .alert-msg.success { color: #388e3c; background-color: #e8f5e9; border-left: 4px solid #388e3c; }
+    .alert-msg.show    { display: block; }
+
+    .login-footer { margin-top: 25px; font-size: 1.4rem; color: #666; }
+
+    .login-footer a {
+      color: var(--primary-accent);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s;
+      cursor: pointer;
+    }
+
+    .login-footer a:hover { color: #1a7fa8; text-decoration: underline; }
+
+    .back-home {
+      display: block;
+      margin-top: 15px;
+      font-size: 1.2rem;
+      color: #888;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .back-home:hover { color: var(--primary-accent); }
+
+    .auth-badge {
+      margin-top: 20px;
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+    .auth-badge.firebase {
+      background-color: #fff3e0;
+      border-left: 4px solid #ff9800;
+      color: #e65100;
+    }
+    .auth-badge.local {
+      background-color: #e3f2fd;
+      border-left: 4px solid var(--primary-accent);
+      color: #0d47a1;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="login-container">
+    <a href="index.html" class="logo">
+      <img src="./assets/images/Mythos.png" width="44" height="44" alt="MYTHOS" style="display:inline;vertical-align:middle;">
+      <span style="font-size:22px;font-weight:700;margin-left:8px;vertical-align:middle;">MYTHOS</span>
+    </a>
+
+    <!-- Tab switcher — Login / Sign Up in one page -->
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabLogin"  onclick="switchTab('login')">Log In</button>
+      <button class="auth-tab"        id="tabSignup" onclick="switchTab('signup')">Sign Up</button>
+    </div>
+
+    <!-- ══════════════════ LOGIN PANEL ══════════════════ -->
+    <div class="auth-panel active" id="panelLogin">
+      <h1 class="login-title">Welcome Back</h1>
+      <p class="login-text">Login to access your library</p>
+
+      <div class="alert-msg" id="loginAlert"></div>
+
+      <div class="form-group">
+        <label for="loginEmail" class="form-label">Email Address</label>
+        <input type="email" id="loginEmail" placeholder="Enter your email" class="form-input" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label for="loginPassword" class="form-label">Password</label>
+        <input type="password" id="loginPassword" placeholder="Enter your password" class="form-input" autocomplete="current-password">
+      </div>
+
+      <button class="btn-login" id="btnLogin" onclick="handleLogin()">Login Now</button>
+
+      <div class="login-footer">
+        <p>Don't have an account? <a onclick="switchTab('signup')">Sign Up Free</a></p>
+        <a href="index.html" class="back-home">← Back to Home</a>
+      </div>
+    </div>
+
+    <!-- ══════════════════ SIGNUP PANEL ══════════════════ -->
+    <div class="auth-panel" id="panelSignup">
+      <h1 class="login-title">Create Account</h1>
+      <p class="login-text">Join thousands of readers on MYTHOS</p>
+
+      <div class="alert-msg" id="signupAlert"></div>
+
+      <div class="form-group">
+        <label for="signupName" class="form-label">Full Name</label>
+        <input type="text" id="signupName" placeholder="Your full name" class="form-input" autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label for="signupEmail" class="form-label">Email Address</label>
+        <input type="email" id="signupEmail" placeholder="Enter your email" class="form-input" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label for="signupPassword" class="form-label">Password</label>
+        <input type="password" id="signupPassword" placeholder="At least 6 characters" class="form-input" autocomplete="new-password">
+      </div>
+      <div class="form-group">
+        <label for="signupConfirm" class="form-label">Confirm Password</label>
+        <input type="password" id="signupConfirm" placeholder="Repeat your password" class="form-input" autocomplete="new-password">
+      </div>
+
+      <button class="btn-login" id="btnSignup" onclick="handleSignup()">Create Account</button>
+
+      <div class="login-footer">
+        <p>Already have an account? <a onclick="switchTab('login')">Log In</a></p>
+        <a href="index.html" class="back-home">← Back to Home</a>
+      </div>
+    </div>
+
+    <div class="auth-badge" id="authBadge"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       type="module" is NON-NEGOTIABLE.
+       firebase-config.js uses ES import/export syntax.
+       A plain <script> tag will throw a SyntaxError and
+       silently fall back to localStorage for everything.
+  ══════════════════════════════════════════════════════ -->
+  <script type="module">
+    import { logIn, signUp, isLoggedIn } from './Firebase Config.js';
+
+    /* ── Redirect if already logged in ── */
+    if (isLoggedIn()) {
+      window.location.href = './Library.html';
+    }
+
+    /* ── Firebase badge ── */
+    const badge = document.getElementById('authBadge');
+    badge.textContent = '🔥 Powered by Firebase Auth';
+    badge.className   = 'auth-badge firebase';
+
+    /* ── Tab switching ── */
+    window.switchTab = function (tab) {
+      const isLogin = tab === 'login';
+      document.getElementById('tabLogin').classList.toggle('active',   isLogin);
+      document.getElementById('tabSignup').classList.toggle('active',  !isLogin);
+      document.getElementById('panelLogin').classList.toggle('active',  isLogin);
+      document.getElementById('panelSignup').classList.toggle('active', !isLogin);
+      clearAlert('loginAlert');
+      clearAlert('signupAlert');
+    };
+
+    /* ── Alert helpers ── */
+    function showAlert(id, msg, type = 'error') {
+      const el = document.getElementById(id);
+      el.textContent = msg;
+      el.className = `alert-msg ${type} show`;
+    }
+    function clearAlert(id) {
+      const el = document.getElementById(id);
+      el.className = 'alert-msg';
+      el.textContent = '';
+    }
+
+    /* ── Button loading state ── */
+    function setLoading(id, loading, label) {
+      const btn = document.getElementById(id);
+      btn.disabled    = loading;
+      btn.textContent = loading ? 'Please wait...' : label;
+    }
+
+    /* ══════════ LOGIN ══════════ */
+    window.handleLogin = async function () {
+      clearAlert('loginAlert');
+      const email    = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+
+      if (!email || !password) {
+        showAlert('loginAlert', '❌ Please fill in all fields.');
+        return;
+      }
+      if (password.length < 6) {
+        showAlert('loginAlert', '❌ Password must be at least 6 characters.');
+        return;
+      }
+
+      setLoading('btnLogin', true, 'Login Now');
+      const result = await logIn(email, password);
+      setLoading('btnLogin', false, 'Login Now');
+
+      if (result.success) {
+        showAlert('loginAlert', '✓ Login successful! Redirecting…', 'success');
+        setTimeout(() => { window.location.href = './Library.html'; }, 900);
+      } else {
+        showAlert('loginAlert', '❌ ' + result.error);
+      }
+    };
+
+    /* ══════════ SIGNUP ══════════ */
+    window.handleSignup = async function () {
+      clearAlert('signupAlert');
+      const name     = document.getElementById('signupName').value.trim();
+      const email    = document.getElementById('signupEmail').value.trim();
+      const password = document.getElementById('signupPassword').value;
+      const confirm  = document.getElementById('signupConfirm').value;
+
+      if (!name || !email || !password || !confirm) {
+        showAlert('signupAlert', '❌ Please fill in all fields.');
+        return;
+      }
+      if (password.length < 6) {
+        showAlert('signupAlert', '❌ Password must be at least 6 characters.');
+        return;
+      }
+      if (password !== confirm) {
+        showAlert('signupAlert', '❌ Passwords do not match.');
+        return;
+      }
+
+      setLoading('btnSignup', true, 'Create Account');
+      const result = await signUp(name, email, password);
+      setLoading('btnSignup', false, 'Create Account');
+
+      if (result.success) {
+        showAlert('signupAlert', '✓ Account created! Redirecting…', 'success');
+        setTimeout(() => { window.location.href = './Library.html'; }, 900);
+      } else {
+        showAlert('signupAlert', '❌ ' + result.error);
+      }
+    };
+
+    /* ── Enter key support ── */
+    document.getElementById('loginPassword').addEventListener('keydown', e => { if (e.key === 'Enter') window.handleLogin();  });
+    document.getElementById('signupConfirm').addEventListener('keydown', e => { if (e.key === 'Enter') window.handleSignup(); });
+  </script>
+
+</body>
+</html>
